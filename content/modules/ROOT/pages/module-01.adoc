@@ -28,7 +28,7 @@ LangChain has a number of components designed to help build Q&A applications, an
 
 [.text-center]
 ====
-image::llm-rag-architecture.png[width=60%]
+image::llm-rag-architecture.png[width=60% align="center"]
 ====
 
 ==== RAG Architecture
