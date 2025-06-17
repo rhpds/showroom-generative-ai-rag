@@ -5,3 +5,8 @@ Thank you for exploring this demo on ChatOps Generative AI with LLM, RAG and Dat
 == ChatOps Generative AI with LLM, RAG and Data Science Pipelines.
 
 Welcome to the world of generative AI, where cutting-edge large language models (LLMs) combine with retrieval-augmented generation (RAG) to create sophisticated chatbots and AI-powered applications. This demo explores how to leverage the power of LLMs with RAG within the Red Hat OpenShift AI environment, enabling businesses to answer complex questions, enhance customer interactions, and streamline operations. You will be able to understand this architecture and even implement it in your environment where you can customize LLM outcomes with your own set of documents and get relevant results from your chat bot.
+
+*There are two modules in this demo.*:
+
+* First module does good introduciton of RAG and related concepts.
+* Second module is the actual demo guide.
