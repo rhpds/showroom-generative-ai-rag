@@ -20,7 +20,7 @@ image::chat-with-rag.png[]
 
 Let's understand a bit about how RAG works.
 
-=== What is RAG?
+== What is RAG?
 
 RAG is a technique for augmenting LLM knowledge with additional data. +
 LLMs can reason about wide-ranging topics, but their knowledge is limited to the public data up to a specific point in time that they were trained on. If you want to build AI applications that can reason about private data or data introduced after a model’s cutoff date, you need to augment the knowledge of the model with the specific information it needs. The process of bringing the appropriate information and inserting it into the model prompt is known as Retrieval Augmented Generation (RAG). +
@@ -55,7 +55,7 @@ Now let’s focus on how OpenShift AI works here right from the development envi
 Last but not least you can also serve models from Red Hat OpenShift AI dashboard as well as manage its lifecycle. +
 This is all I wanted to demonstrate for now. Thanks for watching this demo on LLM with RAG.
 
-==== Business Benefits of using LLM with RAG:
+== Business Benefits of using LLM with RAG:
 
 Using Large Language Models (LLMs) for businesses, especially in combination with Retrieval-Augmented Generation (RAG), offers several benefits: +
 *Enhanced Customer Support:* LLMs can be deployed in chatbots or virtual assistants to provide instant responses to customer inquiries, improving response time and customer satisfaction. +

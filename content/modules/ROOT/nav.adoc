@@ -1,7 +1,6 @@
-* xref:module-01.adoc[1. RPM Native Container]
-** xref:module-01.adoc#repositories[Repositories]
-** xref:module-01.adoc#software[Software]
+* xref:module-01.adoc[1. Introduction]
+** xref:module-01.adoc#What is RAG?[What is RAG?]
+** xref:module-01.adoc#Business Benefits of using LLM with RAG[Business Benefits of Using RAG with LLM]
 
-* xref:module-02.adoc[2. GitHub Sourced Container]
-** xref:module-02.adoc#prerequisites[Install Prerequisites]
-** xref:module-02.adoc#container[Enable Container]
+* xref:module-02.adoc[2. Demo Guide]
+** xref:module-02.adoc#Demo Guide[Demo Guide]
