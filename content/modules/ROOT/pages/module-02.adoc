@@ -1,6 +1,10 @@
 = Demo Guide
 
-Login to Openshift console {openshift_console_url} as admin with its password as {password} after the lab is provisioned.
+Login to Openshift console: {openshift_console_url}
+
+username: admin
+
+password: {password}
 
 image::demo/ocp-login.png[]
 
