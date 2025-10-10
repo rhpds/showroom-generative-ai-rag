@@ -22,7 +22,7 @@ Login to OpenShift AI Dashboard and go to ic-shared-rag-llm data science project
 
 image::demo/ds-project.png[]
 
-Create a workbench named “Shared RAG LLM Workbench” as shown below.
+Create a workbench named “Shared RAG LLM Workbench” as shown below. Use "Standard Data Science" image for creation of workbench.
 
 image::demo/llm-workbench.png[]
 
@@ -112,7 +112,9 @@ Note that a successful completion of the pipeline ensures that new data is inges
 
 Everything you need is already set in this environment like pipeline server, runtime environment, etc. Elyra run will convert your pipeline on canvas to creating a pipeline run for tekton in OpenShift.
 
-Go back to the Data Science project ic-shared-rag-llm your OpenShift AI Dashboard and create a workbench similar to the one already running. Once the new workbench is created, open it and clone the git repo before you do the demonstration to save time. +
+Go back to the Data Science project ic-shared-rag-llm your OpenShift AI Dashboard and create a workbench similar to the one already running. 
+Use "Standard Data Science" image for creation of workbench.
+Once the new workbench is created, open it and clone the git repo before you do the demonstration to save time. +
 Create a new workbench -> llm test
 
 
