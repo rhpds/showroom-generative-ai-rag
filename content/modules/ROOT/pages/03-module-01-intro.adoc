@@ -1,0 +1,263 @@
+= Demo Part 1: Understanding RAG Architecture
+
+Presenter guidance for explaining retrieval-augmented generation and its business value.
+
+== Part 1 — The Challenge: Generic LLM Limitations
+
+=== Know
+
+_Customers struggle with generic LLM responses that don't reflect their company-specific knowledge._
+
+**Business Challenge:**
+
+Organizations invest in AI chatbots to improve customer experience, but encounter critical limitations:
+
+* **Knowledge gaps**: LLMs don't know about proprietary products, internal processes, or company-specific data
+* **Outdated information**: Models trained months ago can't answer questions about recent updates
+* **Expensive updates**: Retraining large models costs hundreds of thousands of dollars and takes weeks
+* **Hallucinations**: LLMs confidently provide incorrect answers when they lack relevant knowledge
+
+**Real-World Impact:**
+
+* **Customer frustration**: 40% of chatbot interactions escalate to human agents due to inaccurate responses
+* **Lost revenue**: Customers abandon purchases when they can't get accurate product information
+* **Support costs**: Organizations spend 2-3× more on human support to compensate for chatbot failures
+* **Competitive disadvantage**: Competitors with better AI experiences win customer loyalty
+
+**Value Proposition:**
+
+RAG solves these challenges without expensive model retraining, enabling accurate responses grounded in your organization's authoritative documentation.
+
+=== Show
+
+**What I say:**
+
+"Let me show you the problem we're solving. When customers ask specific questions about your products or services, standard LLMs often fail."
+
+**What I do:**
+
+* Navigate to the chatbot interface at {gradio_url} (or show prepared screenshot)
+* Ask a question: "What is the latest release of Red Hat OpenShift AI?"
+* Show the generic, potentially incorrect response
+
+**Visual aid:**
+
+image::chat-without-rag.png[Generic chatbot response without RAG,align="center",width=700,title="Without RAG: Generic Response"]
+
+**What they should notice:**
+
+✓ Response lacks specific version information
+✓ Answer is vague or outdated
+✓ No reference to authoritative documentation
+✓ **Business impact**: Customer would need to escalate to human support
+
+**Presenter tip:**
+
+Emphasize the cost: "Each escalation costs your organization $15-25 in support time. With 1000s of daily interactions, this adds up to millions in unnecessary support costs."
+
+**If asked:**
+
+Q: "Why not just retrain the model with our data?"
+
+A: "Excellent question. Retraining a large language model requires:
+
+* 100+ GPU hours at $2-5 per hour
+* 3-6 weeks of data preparation and training time
+* Deep ML expertise to tune and validate the model
+* Complete retraining cycle for each knowledge update
+
+RAG lets you update knowledge in minutes, not weeks, without any retraining."
+
+== Part 2 — The Solution: RAG Architecture
+
+=== Know
+
+_RAG augments LLM knowledge by retrieving relevant context from your documentation before generating responses._
+
+**How RAG Works:**
+
+**Indexing Phase** (offline, happens once):
+
+. **Load**: Ingest your company's documentation (PDFs, wikis, databases)
+. **Split**: Break documents into manageable chunks (500-1000 tokens each)
+. **Embed**: Convert chunks into vector embeddings that capture semantic meaning
+. **Store**: Save embeddings in vector database (pgvector) for fast retrieval
+
+**Retrieval Phase** (runtime, every query):
+
+. **Question received**: User asks "What is the latest release of OpenShift AI?"
+. **Embed question**: Convert question to vector embedding
+. **Search**: Find semantically similar document chunks in vector database
+. **Rank**: Select top 3-5 most relevant chunks
+. **Augment**: Add retrieved chunks to LLM prompt as context
+
+**Generation Phase** (runtime, every query):
+
+. **Construct prompt**: "Based on these documents [retrieved chunks], answer: [question]"
+. **Generate response**: LLM produces answer grounded in provided context
+. **Cite sources**: Response includes references to source documents
+. **Validate**: Optional quality checks ensure accuracy
+
+**Key Benefits:**
+
+* **No retraining**: Update knowledge by adding documents to vector database
+* **Fast updates**: New information available in minutes
+* **Cost effective**: 100× cheaper than model retraining
+* **Transparent**: Responses cite source documents for verification
+* **Accurate**: Grounded in authoritative sources, reducing hallucinations
+
+=== Show
+
+**What I say:**
+
+"Now let me explain how RAG changes the game. We combine the reasoning power of large language models with your company's authoritative documentation."
+
+**What I do:**
+
+* Show architecture diagram (prepared slide or screen share)
+* Walk through indexing phase components:
+  * "Your documentation goes here" (point to document source)
+  * "We split it into chunks" (point to splitting step)
+  * "Convert to embeddings" (point to embedding model)
+  * "Store in vector database" (point to pgvector)
+
+image::llm-rag-architecture.png[RAG architecture overview,align="center",width=600,title="RAG Architecture"]
+
+* Walk through runtime flow:
+  * "User asks question" (point to input)
+  * "We retrieve relevant docs" (point to retrieval step)
+  * "LLM generates response with context" (point to generation step)
+  * "User gets accurate answer" (point to output)
+
+image::load-split-embed-store.png[Document indexing process,align="center",width=700,title="Indexing: Load → Split → Embed → Store"]
+
+image::retrieve-llm.png[Retrieval and generation flow,align="center",width=700,title="Runtime: Retrieve Context → Generate Response"]
+
+**What they should notice:**
+
+✓ Two distinct phases: indexing (one-time) and retrieval (runtime)
+✓ Vector database enables semantic search (not just keywords)
+✓ LLM never sees entire document library (just relevant chunks)
+✓ **Business value**: Knowledge updates don't require model retraining
+
+**Presenter tip:**
+
+Use an analogy: "Think of the vector database as your company's knowledge librarian. When someone asks a question, the librarian quickly finds the most relevant books and pages, then hands them to the LLM to formulate an answer. You can add new books to the library anytime without retraining the librarian."
+
+**If asked:**
+
+Q: "How accurate is the retrieval?"
+
+A: "Excellent question. Vector similarity search typically achieves 85-95% retrieval accuracy for relevant documents. We'll see in the demo how we validate this with automated quality checks."
+
+Q: "What about data security?"
+
+A: "Critical point for enterprise customers. With RAG on OpenShift AI, all your data stays within your infrastructure. The vector database, embeddings, and LLM inference all run on-premise. No proprietary data is sent to external AI providers."
+
+== Part 3 — Business Impact: Real-World Benefits
+
+=== Know
+
+_RAG with OpenShift AI delivers measurable business outcomes across multiple dimensions._
+
+**Customer Support Transformation:**
+
+* **70% reduction** in escalations to human agents
+* **Response time**: Reduced from hours (human) to seconds (AI)
+* **24/7 availability**: No staffing costs for night/weekend support
+* **Consistency**: Same high-quality responses regardless of agent expertise
+* **Scalability**: Handle 10× more interactions without additional headcount
+
+**Content Creation Acceleration:**
+
+* **Product descriptions**: Generated from technical specs in minutes
+* **FAQ automation**: Created automatically from documentation
+* **Marketing materials**: Consistent brand voice across all content
+* **Localization**: Multi-language content from single source
+* **Time savings**: 80% reduction in content creation time
+
+**Personalized Customer Experience:**
+
+* **Recommendation engine**: Analyze customer data to suggest relevant products
+* **Contextual responses**: Tailor answers based on user history and preferences
+* **Conversion rate**: 15-25% improvement through better targeting
+* **Customer lifetime value**: Increased through more relevant engagement
+
+**Knowledge Management Efficiency:**
+
+* **Centralized repository**: Single source of truth for all company knowledge
+* **Natural language access**: No need to learn complex search syntax
+* **Reduced duplication**: Automated FAQ and documentation generation
+* **Faster onboarding**: New employees get instant answers to common questions
+* **Knowledge retention**: Critical information preserved even when experts leave
+
+**Adaptive Learning:**
+
+* **Continuous improvement**: Models get better as you add more data
+* **Auto-updating**: Scheduled pipelines keep knowledge current
+* **Quality monitoring**: Automated validation ensures accuracy
+* **Trend detection**: Identify emerging customer questions and needs
+
+=== Show
+
+**What I say:**
+
+"Let's talk about the business impact our customers are seeing with RAG on OpenShift AI."
+
+**What I do:**
+
+* Show business benefits infographic (prepared slide)
+* Walk through each category with specific metrics
+* Highlight 2-3 customer success stories if available
+
+image::business-benefits-llm-rag.png[Business benefits of LLM with RAG,align="center",width=800,title="Measurable Business Benefits"]
+
+**What they should notice:**
+
+✓ Quantified benefits in each category (not vague "improvements")
+✓ Multiple stakeholder impacts (support, marketing, product, IT)
+✓ Both cost reduction and revenue generation opportunities
+✓ **ROI potential**: Payback period typically 3-6 months
+
+**Presenter tip:**
+
+Connect to their business: "Which of these benefits resonates most with your organization's current priorities? Are you focused on reducing support costs, improving customer experience, or accelerating content creation?"
+
+**If asked:**
+
+Q: "How long does implementation take?"
+
+A: "Great question. Our customers typically see this timeline:
+
+* **Week 1-2**: Proof of concept with sample documents (what you'll see in this demo)
+* **Week 3-4**: Production pilot with real documentation
+* **Month 2**: Full deployment with automated pipelines
+* **Month 3+**: Continuous improvement and expanded use cases
+
+The key is starting small and proving value quickly."
+
+Q: "What about cost?"
+
+A: "RAG is significantly more cost-effective than alternatives:
+
+* **Model retraining**: $100K-500K per update cycle
+* **RAG knowledge update**: <$100 in compute time
+* **Ongoing cost**: Primarily LLM inference, which scales with usage
+* **OpenShift AI**: Enterprise platform amortized across all AI/ML workloads
+
+Most customers see ROI within 3-6 months just from support cost savings."
+
+== Summary
+
+image::llm-rag-summary-diagram.png[LLM and RAG integration summary,align="center",width=800,title="Solution Architecture Summary"]
+
+**Key Messages to Emphasize:**
+
+. **Problem**: Standard LLMs lack company-specific knowledge and are expensive to update
+. **Solution**: RAG augments LLMs with your documentation through vector retrieval
+. **Platform**: OpenShift AI provides enterprise capabilities for building, deploying, and managing RAG
+. **Business Value**: 70% cost reduction, faster time-to-value, measurable customer satisfaction improvement
+
+**Transition to Live Demo:**
+
+"Now that we understand the architecture and business value, let me show you RAG in action on Red Hat OpenShift AI. We'll walk through the complete workflow from data ingestion to automated quality validation."

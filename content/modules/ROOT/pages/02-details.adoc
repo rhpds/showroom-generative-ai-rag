@@ -1,0 +1,284 @@
+= Technical background and architecture
+
+Understanding the technology behind AI-powered chatbots with RAG on OpenShift AI.
+
+== What is RAG?
+
+=== The Problem with Standard LLMs
+
+Large language models (LLMs) are powerful AI systems trained on vast amounts of public data. However, they have critical limitations for enterprise use:
+
+**Knowledge cutoff:**
+
+* LLMs only know information from their training data
+* Training data has a cutoff date (for example, January 2025)
+* Cannot answer questions about events after that date
+* Don't know about your company's proprietary products or services
+
+**No access to private data:**
+
+* Cannot reason about your internal documentation
+* Don't understand your company-specific terminology
+* Can't reference your customer data or business metrics
+* No knowledge of your unique processes and procedures
+
+**Example:**
+
+Ask a standard LLM "What is the latest release of Red Hat OpenShift AI?" and it might provide:
+
+* Outdated information from its training cutoff
+* Generic information not specific to your environment
+* Hallucinated version numbers that don't exist
+
+image::chat-without-rag.png[Chatbot response without RAG showing generic answer,align="center",width=700,title="Chatbot Without RAG - Generic Response"]
+
+=== How RAG Solves This
+
+**Retrieval-Augmented Generation (RAG)** augments LLM knowledge with additional data from your organization.
+
+**The RAG Approach:**
+
+. **Augment** the LLM with your company's documentation
+. **Retrieve** relevant information when users ask questions
+. **Generate** responses grounded in your specific data
+
+**Key Benefits:**
+
+* No expensive model retraining required
+* Knowledge updates happen in minutes, not weeks
+* Responses are grounded in your authoritative sources
+* Significantly reduces hallucinations and incorrect answers
+
+**Same Question with RAG:**
+
+After adding Red Hat OpenShift AI documentation to RAG, the chatbot provides:
+
+* Accurate version information from official docs
+* Specific features in the latest release
+* Links to relevant documentation sections
+* Company-specific deployment guidance
+
+image::chat-with-rag.png[Chatbot response with RAG showing accurate answer from documentation,align="center",width=700,title="Chatbot With RAG - Accurate Response"]
+
+== RAG Architecture
+
+A typical RAG application has two main components:
+
+. **Indexing**: Pipeline for ingesting data from sources and indexing it (offline)
+. **Retrieval and generation**: RAG chain that retrieves relevant data and generates responses (runtime)
+
+image::llm-rag-architecture.png[RAG architecture diagram showing indexing and retrieval,align="center",width=600,title="RAG Architecture Overview"]
+
+=== Indexing Phase
+
+The indexing phase prepares your documents for fast retrieval:
+
+**Load:**
+
+* Ingest documents from various sources (PDFs, web pages, databases)
+* DocumentLoaders handle different file formats
+* Extract text content while preserving structure
+
+image::load-split-embed-store.png[Document indexing flow,align="center",width=700,title="Document Indexing: Load → Split → Embed → Store"]
+
+**Split:**
+
+* Break large documents into smaller chunks
+* Typical chunk size: 500-1000 tokens
+* Preserves context while enabling efficient retrieval
+* Smaller chunks fit within LLM context windows
+
+**Embed:**
+
+* Convert text chunks into vector embeddings
+* Embeddings capture semantic meaning
+* Similar concepts have similar vector representations
+* Enables semantic search (not just keyword matching)
+
+**Store:**
+
+* Save embeddings in a vector database
+* Enables fast similarity search
+* Popular options: pgvector, Chroma, Pinecone
+* Indexed for sub-second retrieval
+
+=== Retrieval and Generation Phase
+
+When users ask questions, the RAG system:
+
+**Retrieve:**
+
+* Convert user question into a vector embedding
+* Search vector database for semantically similar chunks
+* Retrieve top K most relevant document sections (typically 3-5)
+* Rank results by relevance score
+
+image::retrieve-llm.png[Retrieval and LLM generation flow,align="center",width=700,title="Runtime: Retrieve → Generate Response"]
+
+**Generate:**
+
+* Construct a prompt with retrieved context
+* Send prompt to LLM: "Based on these documents, answer: [question]"
+* LLM generates response grounded in provided context
+* Response cites specific document sections when possible
+
+**Quality Assurance:**
+
+* Validate response accuracy against source documents
+* Measure response time (target: <3 seconds)
+* Monitor for hallucinations or off-topic responses
+* Track user satisfaction and escalation rates
+
+== OpenShift AI Integration
+
+Red Hat OpenShift AI provides the platform for building, deploying, and managing RAG applications at enterprise scale.
+
+=== Development Environment
+
+**Jupyter Notebooks:**
+
+* Data scientists work in familiar Jupyter notebook interface
+* Pre-configured with AI/ML libraries (LangChain, transformers, etc.)
+* Access to GPU resources for model serving
+* Integrated with Git for version control
+
+**Key Capabilities:**
+
+* Develop RAG pipelines using Python and LangChain
+* Test embeddings and retrieval quality
+* Experiment with different LLM models
+* Debug and optimize performance
+
+=== Automated Pipelines
+
+**OpenShift Pipelines Integration:**
+
+* Data scientists create pipelines using Elyra visual pipeline editor
+* No need to understand Kubernetes or Tekton directly
+* Submit pipeline from Jupyter notebook
+* Automatically creates Tekton PipelineRun in OpenShift
+
+**Pipeline Tasks:**
+
+. **Data ingestion**: Load new documents into vector database
+. **Quality validation**: Verify retrieval accuracy with test queries
+. **Response testing**: Validate LLM response quality and latency
+. **Security scanning**: Check model integrity (SHA verification)
+. **Results storage**: Save metrics to S3-compatible storage
+
+**Automation Benefits:**
+
+* Schedule regular knowledge base updates
+* Automated quality checks before deployment
+* No manual intervention required
+* Complete audit trail of all changes
+
+=== Model Serving and Lifecycle Management
+
+**Deployment:**
+
+* Serve LLM models directly from OpenShift AI dashboard
+* Auto-scaling based on request volume
+* A/B testing of different model versions
+* Blue-green deployments for zero-downtime updates
+
+**Monitoring:**
+
+* Track inference latency and throughput
+* Monitor model accuracy over time
+* Alert on degraded performance
+* Cost tracking per model endpoint
+
+**Governance:**
+
+* Role-based access control for models and data
+* Model versioning and rollback capabilities
+* Compliance with data residency requirements
+* Complete lineage tracking
+
+== Technical Components
+
+=== Vector Database (pgvector)
+
+* PostgreSQL extension for vector similarity search
+* Stores document embeddings for fast retrieval
+* Supports semantic search queries
+* Enterprise-grade reliability and backup
+
+=== LLM Model Serving
+
+* Granite, Mistral, or CodeLlama models
+* Served through LiteLLM proxy or vLLM
+* GPU acceleration for low latency
+* Virtual API keys for access control
+
+=== Pipeline Server
+
+* Tekton Pipelines for workflow automation
+* Triggered manually or on schedule
+* Integrates with Git webhooks
+* Stores artifacts in S3-compatible storage (MinIO)
+
+=== Chatbot Interface
+
+* Gradio web interface for user interaction
+* Connects to shared LLM endpoint
+* Retrieves context from vector database
+* Displays responses with source citations
+
+== Business Benefits Summary
+
+**Enhanced Customer Support:**
+
+* LLMs provide instant responses to customer inquiries
+* Response time improved from hours to seconds
+* 70% reduction in escalations to human agents
+* 24/7 availability without staffing costs
+
+**Content Creation:**
+
+* Generate product descriptions from technical specs
+* Automated FAQ generation from documentation
+* Marketing materials created in minutes
+* Consistent brand voice across all content
+
+**Personalized Recommendations:**
+
+* Analyze customer data to suggest relevant products
+* Tailored responses based on user history
+* Increased conversion rates through better targeting
+* Higher customer lifetime value
+
+**Automated Data Analysis:**
+
+* Extract insights from large volumes of unstructured data
+* Identify trends and patterns automatically
+* Data-driven decisions made more efficiently
+* Reduced analysis time from weeks to hours
+
+**Improved Search Relevance:**
+
+* Semantic search understands user intent
+* More relevant results than keyword matching
+* Better user experience on websites and applications
+* Reduced time to find information
+
+**Efficient Knowledge Management:**
+
+* Centralized knowledge base accessible through natural language
+* Reduced duplication of documentation effort
+* Easier knowledge sharing across organization
+* Faster onboarding of new employees
+
+**Adaptive Learning Systems:**
+
+* Continuous training with new data
+* Models improve over time automatically
+* Adapt to changing customer needs
+* Stay current with evolving business landscape
+
+image::business-benefits-llm-rag.png[Business benefits infographic,align="center",width=800,title="Business Benefits of LLM with RAG"]
+
+== LLM + RAG Summary
+
+image::llm-rag-summary-diagram.png[Summary diagram of LLM and RAG integration,align="center",width=800,title="LLM + RAG Solution Architecture"]

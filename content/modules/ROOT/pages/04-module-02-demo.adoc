@@ -1,0 +1,741 @@
+= Demo Part 2: Live demonstration of RAG on OpenShift AI
+
+Presenter guidance for demonstrating the complete RAG workflow including data ingestion, pipeline automation, and model serving.
+
+== Part 1 — Environment Setup and Validation
+
+=== Know
+
+_Before demonstrating RAG capabilities, validate that the environment is properly configured and all components are running._
+
+**Environment Components:**
+
+* **OpenShift cluster**: Provides the platform infrastructure
+* **OpenShift AI dashboard**: Web interface for data science workflows
+* **RAG project** (`ic-shared-rag-llm`): Contains workbench, pipeline server, and chatbot
+* **Supporting projects**:
+  * `ic-shared-rag-db`: PostgreSQL with pgvector extension
+  * `ic-shared-rag-minio`: S3-compatible object storage for pipeline artifacts
+* **Argo CD**: GitOps continuous delivery for managing configurations
+
+**Why This Matters:**
+
+Organizations need confidence that AI infrastructure is production-ready:
+
+* **Reliability**: All components must be healthy before customer-facing demos
+* **Reproducibility**: Consistent environment enables repeatable demonstrations
+* **Troubleshooting**: Quick validation identifies issues before they impact the demo
+* **Professional credibility**: Smooth demos build customer confidence in the platform
+
+=== Show
+
+**What I say:**
+
+"Let me show you the complete RAG environment running on OpenShift AI. We'll validate that all components are healthy before proceeding with the demonstration."
+
+**What I do:**
+
+. **Log into OpenShift Console:**
+   * Navigate to {openshift_console_url}
+   * Username: admin
+   * Password: {password}
+
+image::demo/ocp-login.png[OpenShift console login,align="center",width=700,title="OpenShift Console Login"]
+
+. **Validate RAG project pods:**
+   * Switch to project: `ic-shared-rag-llm`
+   * Navigate to Workloads → Pods
+   * Verify all pods are in Running or Completed state
+   * Note: Some job pods may show errors initially but should have successful jobs
+
+image::demo/ic-shared-rag-llm.png[RAG project pods status,align="center",width=800,title="RAG Project - All Pods Running"]
+
+. **Check supporting projects:**
+   * Navigate to `ic-shared-rag-db`: PostgreSQL with pgvector
+   * Navigate to `ic-shared-rag-minio`: Object storage for pipelines
+   * Verify database and storage pods are healthy
+
+. **Open supporting dashboards:**
+   * OpenShift AI Dashboard
+   * Argo CD Console (for GitOps workflow)
+   * Keep these tabs open for the demonstration
+
+**What they should notice:**
+
+✓ All critical components are running (no red/failed pods)
+✓ Multiple projects working together (separation of concerns)
+✓ Argo CD provides GitOps automation
+✓ **Production-ready**: Enterprise-grade infrastructure and monitoring
+
+**Presenter tip:**
+
+Emphasize the enterprise capabilities: "Notice how OpenShift provides complete visibility into the infrastructure. Your operations team can monitor, troubleshoot, and scale these AI workloads just like any other application. This is critical for production deployments."
+
+**If asked:**
+
+Q: "What if a pod is failing?"
+
+A: "Great question. OpenShift provides self-healing capabilities. If a pod fails, Kubernetes automatically restarts it. For persistent issues, we can check logs (demonstrate if needed) and Argo CD can resync configurations to restore the desired state."
+
+== Part 2 — OpenShift AI Data Science Project
+
+=== Know
+
+_OpenShift AI organizes AI/ML work into data science projects that contain workbenches, pipelines, and model deployments._
+
+**Data Science Project Components:**
+
+* **Workbench**: Jupyter notebook environment for development
+* **Data connections**: Access to S3 storage, databases, and external services
+* **Pipeline server**: Executes automated ML workflows
+* **Models**: Deployed inference endpoints
+* **Permissions**: Role-based access control for team collaboration
+
+**Why Data Science Projects Matter:**
+
+* **Organization**: Group related resources (notebooks, pipelines, models) together
+* **Collaboration**: Multiple data scientists can work in the same project
+* **Resource management**: Set quotas and limits per project
+* **Governance**: Track who deployed what and when
+* **Lifecycle management**: Promote from dev → test → prod projects
+
+=== Show
+
+**What I say:**
+
+"Let's explore the OpenShift AI dashboard where data scientists manage their RAG workflows."
+
+**What I do:**
+
+. **Navigate to OpenShift AI Dashboard:**
+   * Login with same admin credentials
+   * Navigate to Data Science Projects
+
+. **Find the RAG project:**
+   * Search for "llm" in the project list
+   * Select "Shared LLM with RAG" data science project
+
+image::demo/ds-project.png[Data science project selection,align="center",width=700,title="OpenShift AI - Data Science Projects"]
+
+. **Review project components:**
+   * **Workbenches**: "Shared RAG LLM Workbench" (may need to be created if not exists)
+   * **Data connections**: S3 storage for pipeline artifacts
+   * **Pipelines**: Automated data ingestion and quality validation
+   * **Models**: LLM serving endpoints (if configured)
+
+image::demo/shared-rag-llm-project.png[RAG project details,align="center",width=800,title="RAG Project Components"]
+
+. **Create workbench (if needed):**
+   * Click "Create workbench"
+   * Name: "Shared RAG LLM Workbench"
+   * Image: "Standard Data Science" notebook image
+   * Container size: Medium (2 CPU, 8Gi RAM recommended)
+   * Click "Create workbench"
+
+image::demo/llm-workbench.png[Workbench creation,align="center",width=700,title="Creating Jupyter Workbench"]
+
+**What they should notice:**
+
+✓ Everything organized in one project (easy to manage)
+✓ Self-service environment creation (no tickets to IT)
+✓ Pre-configured images (data scientists productive immediately)
+✓ **Developer experience**: Familiar Jupyter interface, no Kubernetes knowledge required
+
+**Presenter tip:**
+
+"This is what your data science team sees. They don't need to understand Kubernetes, pods, or containers. They click 'Create workbench', get a Jupyter notebook, and start building AI applications. OpenShift AI handles all the infrastructure complexity."
+
+**If asked:**
+
+Q: "Can data scientists bring their own libraries?"
+
+A: "Absolutely. They can install Python packages directly in notebooks, or your team can build custom notebook images with pre-installed libraries. OpenShift AI supports both approaches."
+
+== Part 3 — Automated RAG Pipelines (Admin Persona)
+
+=== Know
+
+_Automated pipelines ensure consistent, repeatable updates to the RAG knowledge base with built-in quality validation._
+
+**Pipeline Workflow:**
+
+. **Data ingestion**: Load new documents into pgvector database
+. **Retrieval validation**: Test that vector search returns relevant results
+. **Response quality check**: Verify LLM generates accurate answers
+. **Results aggregation**: Store metrics in S3 for analysis
+
+**Pipeline Benefits:**
+
+* **Automation**: No manual steps required for knowledge updates
+* **Consistency**: Same process every time (eliminates human error)
+* **Quality assurance**: Automated validation catches issues before production
+* **Auditability**: Complete record of what was ingested and when
+* **Scheduling**: Run daily/weekly to keep knowledge current
+
+**Business Value:**
+
+* **Time savings**: Knowledge updates take minutes instead of days
+* **Reliability**: Automated validation ensures quality before deployment
+* **Compliance**: Audit trail for regulatory requirements
+* **Scalability**: Handle 100s of document updates without additional staff
+
+=== Show
+
+**What I say:**
+
+"Now let me show you how we automate knowledge base updates. This is what your operations team would use to keep the RAG system current with new documentation."
+
+**What I do:**
+
+. **Import pipeline definition:**
+   * In the RAG data science project, go to "Pipelines" section
+   * Select "Import pipeline"
+   * Download pipeline manifest from:
+     link:https://github.com/ritzshah/llm-rag-deployment/blob/update-token-v1/examples/pipelines/working-new-llm-ingestion-test.yaml[working-new-llm-ingestion-test.yaml^]
+   * Upload the downloaded YAML file
+
+image::demo/import-pipeline-1.png[Import pipeline step 1,align="center",width=700,title="Import Pipeline Definition"]
+
+image::demo/import-pipeline-2.png[Import pipeline upload,align="center",width=700,title="Upload Pipeline YAML"]
+
+. **Review pipeline DAG:**
+   * OpenShift AI displays the directed acyclic graph (DAG)
+   * 4 tasks shown: Ingest → Validate → Test → Summarize
+   * Arrows show dependencies (sequential execution)
+
+image::demo/dag.png[Pipeline DAG visualization,align="center",width=800,title="Pipeline DAG - 4 Tasks"]
+
+. **Create pipeline run:**
+   * Click "Create run"
+   * Fill in details:
+     * **Name**: `rag-ingestion-run-[timestamp]`
+     * **Description**: "Ingest Red Hat OpenShift AI 2.9 docs"
+     * **Pipeline**: Select the imported pipeline
+     * **Run type**: Immediate (or schedule for recurring)
+
+image::demo/create-run.png[Create pipeline run,align="center",width=700,title="Create Pipeline Run"]
+
+image::demo/create-run-2.png[Pipeline run parameters,align="center",width=700,title="Configure Run Parameters"]
+
+. **Start the run:**
+   * Click "Create Run"
+   * Pipeline executes as Tekton PipelineRun in OpenShift
+
+**What they should notice:**
+
+✓ Visual pipeline editor (no YAML editing required)
+✓ Automated task execution (no manual steps)
+✓ Scheduling capability (keep knowledge current)
+✓ **Key insight**: "This pipeline takes 10-12 minutes. In production, you'd schedule it to run automatically when documentation is updated in Git."
+
+**Presenter tip:**
+
+"Notice how this works. Your technical writers update documentation in Git. A webhook triggers this pipeline automatically. The knowledge base is updated, tested, and validated without any manual intervention. This is how enterprise AI operations should work."
+
+. **Review pipeline tasks:**
+
+**Task 1 - Data Ingestion:**
+
+* Load Red Hat OpenShift AI 2.9 release notes into pgvector
+* Why minimal data? "We're using a small dataset to demonstrate that RAG provides specific, accurate responses—not hallucinated information."
+
+**Task 2 - Database Validation:**
+
+* Query pgvector to ensure data was ingested correctly
+* Verify vector similarity search works
+
+**Task 3 - Response Quality Check:**
+
+* Send test queries to LLM with RAG
+* Validate response time (target: <3 seconds)
+* Check accuracy of responses
+
+**Task 4 - Results Summary:**
+
+* Aggregate metrics from all tasks
+* Store results in MinIO S3 bucket
+* Generate quality report
+
+image::demo/task-run-1.png[Pipeline tasks overview,align="center",width=800,title="Pipeline Tasks - 4 Steps"]
+
+. **Monitor execution:**
+
+**In OpenShift AI Dashboard:**
+
+* Shows task progression
+* Green checkmarks for completed tasks
+* Real-time logs for troubleshooting
+
+image::demo/langchain-task-view.png[Task execution in OpenShift AI,align="center",width=800,title="OpenShift AI - Task Execution"]
+
+**In OpenShift Console:**
+
+* Each pipeline task runs as a pod
+* Click pod → Logs to see detailed output
+* Shows actual Python code execution and results
+
+image::demo/data-ingestion-response-check.png[Pipeline run in OpenShift console,align="center",width=800,title="OpenShift Console - Pipeline Execution"]
+
+. **View completed pipeline:**
+   * All tasks show green checkmarks
+   * DAG shows successful execution flow
+   * Results stored in S3 bucket
+
+image::demo/successful-run-completion-dag.png[Completed pipeline DAG,align="center",width=800,title="Successful Pipeline Completion"]
+
+**What they should notice:**
+
+✓ Complete automation from start to finish
+✓ Quality validation built into the process
+✓ Multiple views for different personas (data scientist vs ops)
+✓ **Production readiness**: 10 minutes to update knowledge base vs weeks for model retraining
+
+**If asked:**
+
+Q: "How often should we run this pipeline?"
+
+A: "It depends on how frequently your documentation changes:
+
+* **Daily**: For actively updated product docs
+* **Weekly**: For stable documentation with occasional updates
+* **On-demand**: Triggered by Git webhook when docs are merged
+* **Continuous**: Advanced setups can run on every commit to a docs branch
+
+The pipeline is idempotent, so it's safe to run frequently."
+
+== Part 4 — Data Scientist Workflow (Developer Persona)
+
+=== Know
+
+_Data scientists use visual pipeline editors to create and manage ML workflows without writing YAML or understanding Kubernetes._
+
+**Elyra Pipeline Editor:**
+
+* **Visual workflow design**: Drag-and-drop Python scripts to create pipelines
+* **No YAML required**: Generates Tekton pipeline definitions automatically
+* **Jupyter integration**: Create and submit pipelines directly from notebook interface
+* **Rapid iteration**: Test pipeline changes without infrastructure knowledge
+
+**Developer Experience Benefits:**
+
+* **Familiar tools**: Jupyter notebooks and Python (no new skills required)
+* **Self-service**: Create pipelines without ops team involvement
+* **Fast feedback**: See results in OpenShift AI dashboard immediately
+* **Collaboration**: Share notebooks and pipelines with team via Git
+
+=== Show
+
+**What I say:**
+
+"Now let's see this from the data scientist perspective. They use visual tools to create pipelines without needing to understand the underlying Kubernetes infrastructure."
+
+**Note to Presenter:** This section is optional and recommended only if you have developers or technical audience members.
+
+**What I do:**
+
+. **Access the workbench:**
+   * In OpenShift AI dashboard, find "Shared RAG LLM Workbench"
+   * Click "Open" to launch Jupyter notebook interface
+   * First login: Use admin credentials
+   * Authorize: Allow selected permissions
+
+image::demo/open-test-llm-wkbench.png[Open workbench,align="center",width=700,title="Launch Jupyter Workbench"]
+
+image::demo/authorize-test-llm.png[Authorize workbench access,align="center",width=700,title="Authorize Jupyter Access"]
+
+. **Clone the demo repository:**
+   * Wait for Jupyter to load (first launch takes ~1 minute)
+   * Click Git icon in left sidebar
+   * Clone repository:
+     link:https://github.com/ritzshah/llm-rag-deployment.git^[https://github.com/ritzshah/llm-rag-deployment.git]
+   * **Important**: Switch to branch `update-token-v1`
+
+image::demo/clone-repo.png[Clone Git repository,align="center",width=700,title="Clone Repository in Jupyter"]
+
+image::demo/update-branch.png[Switch to branch,align="center",width=700,title="Switch to update-token-v1 Branch"]
+
+. **Configure pipeline server (one-time setup):**
+   * Navigate to OpenShift AI dashboard → Data Science Projects
+   * Select "Shared LLM with RAG" project
+   * Review Data Science Pipeline configuration
+   * Ensure Cloud Object Storage Endpoint is set to MinIO route:
+     * Get route from OpenShift: Projects → ic-shared-rag-minio → Routes → minio-s3
+     * Example: `https://minio-s3-ic-shared-rag-minio.apps.cluster-276jx.276jx.sandbox2778.opentlc.com`
+     * Update if needed
+
+image::demo/review-ds-pipeline-ui.png[Review pipeline configuration,align="center",width=700,title="Data Science Pipeline Configuration"]
+
+image::demo/minio-route.png[Get MinIO route,align="center",width=700,title="MinIO S3 Route"]
+
+image::demo/minio-route-update.png[Update pipeline endpoint,align="center",width=700,title="Update Pipeline Endpoint"]
+
+image::demo/dsp-endpoint-check.png[Verify endpoint,align="center",width=700,title="Verify Cloud Object Storage Endpoint"]
+
+. **Open Elyra pipeline editor:**
+   * Navigate to: `llm-rag-deployment/examples/pipelines/`
+   * Open file: `data_ingestion_response_check.pipeline`
+   * Elyra visual editor displays the 4-task pipeline
+
+image::demo/select-pipeline.png[Select pipeline file,align="center",width=700,title="Open Pipeline in Elyra"]
+
+. **Review pipeline tasks:**
+   * Each box represents a Python script
+   * Lines show dependencies and execution order
+   * Data scientists can drag new Python files to add tasks
+   * No YAML editing required
+
+image::demo/task-1-update.png[Pipeline task details,align="center",width=700,title="Task 1 - Data Ingestion Code"]
+
+**What they should notice:**
+
+✓ Visual pipeline editor (no code for infrastructure)
+✓ Python scripts as building blocks
+✓ Easy to modify and extend
+✓ **Developer productivity**: Data scientists focus on ML logic, not infrastructure
+
+**Presenter tip:**
+
+"This is the power of OpenShift AI. Data scientists work in tools they already know—Jupyter notebooks and Python. They don't need to learn Kubernetes, Tekton, or YAML. The platform handles the infrastructure complexity automatically."
+
+. **Submit pipeline run:**
+   * Click "Run" button in Elyra editor
+   * Select runtime configuration (defaults are fine)
+   * **Important**: Update pipeline name (previous name may already exist)
+   * Click "OK" to submit
+   * Pipeline creates Tekton PipelineRun in OpenShift automatically
+
+image::demo/run-pipeline.png[Submit pipeline run,align="center",width=700,title="Submit Pipeline from Elyra"]
+
+. **Monitor pipeline execution:**
+   * Elyra shows submission confirmation
+   * Click "Run Details" to view in OpenShift AI dashboard
+   * Or navigate to: Experiments → Experiments and runs
+
+image::demo/job-submission.png[Pipeline submission confirmation,align="center",width=700,title="Pipeline Submitted Successfully"]
+
+image::demo/check-data-pipeline-elyra.png[Pipeline in dashboard,align="center",width=700,title="Pipeline Execution in Dashboard"]
+
+image::demo/data-ingestion-response-check-graph.png[Pipeline graph view,align="center",width=700,title="Pipeline Execution Graph"]
+
+image::demo/run-check-main-ui.png[Pipeline run details,align="center",width=700,title="Pipeline Run Status"]
+
+**What they should notice:**
+
+✓ Same pipeline as admin persona created
+✓ Different creation method (visual vs YAML import)
+✓ Both approaches create identical Tekton pipelines
+✓ **Flexibility**: Teams can use the approach that fits their workflow
+
+**Presenter tip:**
+
+"Notice we just demonstrated two workflows for the same outcome:
+
+* **Admin/Ops persona**: Import YAML pipeline definition
+* **Data scientist persona**: Visual Elyra pipeline editor
+
+OpenShift AI supports both. Your data scientists use visual tools, while ops teams can manage infrastructure as code. This flexibility is critical for enterprise AI adoption."
+
+**If asked:**
+
+Q: "Can data scientists add new pipeline tasks?"
+
+A: "Absolutely. Let me show you quickly." (Demonstrate if time permits)
+
+* Drag a Python file from the file browser to the pipeline canvas
+* Connect it to existing tasks (click output → input to draw lines)
+* Submit the updated pipeline
+
+image::demo/drag-task-elyra.png[Drag new task,align="center",width=700,title="Drag Python File to Add Task"]
+
+image::demo/drag-task-elyra-step1.png[Connect tasks,align="center",width=700,title="Connect Tasks in Pipeline"]
+
+"Data scientists can evolve pipelines without infrastructure team involvement. This accelerates AI development significantly."
+
+== Part 5 — Validation and Results
+
+=== Know
+
+_Automated validation ensures knowledge base updates maintain quality standards before being promoted to production._
+
+**Quality Metrics:**
+
+* **Retrieval accuracy**: Are the most relevant documents being retrieved?
+* **Response correctness**: Do LLM responses match expected answers?
+* **Response latency**: Are responses generated within SLA (<3 seconds)?
+* **Data integrity**: Was all data ingested without corruption?
+
+**Business Impact:**
+
+* **Customer satisfaction**: Poor quality responses damage brand reputation
+* **Operational efficiency**: Automated validation reduces manual testing time
+* **Risk mitigation**: Catch issues before they impact customers
+* **Continuous improvement**: Metrics identify areas for optimization
+
+=== Show
+
+**What I say:**
+
+"The final piece is validation. Before we promote knowledge base updates to production, we need confidence that quality standards are met."
+
+**What I do:**
+
+. **Review completed pipeline:**
+   * All 4 tasks should show green checkmarks
+   * Total execution time: ~10-12 minutes
+   * Each task completed successfully
+
+. **Examine task logs:**
+   * Click on any task to view detailed logs
+   * Shows Python execution output
+   * Displays metrics: retrieval accuracy, response time, data volume
+
+. **Interpret results:**
+   * **Task 1 (Ingest)**: "Loaded 50 document chunks into pgvector"
+   * **Task 2 (Validate)**: "Vector search retrieved 5/5 relevant documents"
+   * **Task 3 (Response)**: "Average response time: 2.1 seconds, accuracy: 95%"
+   * **Task 4 (Summary)**: "Results saved to S3: s3://rag-metrics/run-[timestamp].json"
+
+**What they should notice:**
+
+✓ Automated quality gates throughout pipeline
+✓ Quantitative metrics (not subjective assessment)
+✓ Results stored for trend analysis
+✓ **Production readiness**: Confidence to deploy updates automatically
+
+**Presenter tip:**
+
+"In production, you'd set thresholds:
+
+* If retrieval accuracy < 85%: Alert and block deployment
+* If response time > 3 seconds: Scale LLM endpoints
+* If accuracy degrades over time: Investigate data quality
+
+This is how enterprise AI operations work—automated quality gates, not hope and manual testing."
+
+**If asked:**
+
+Q: "What if the pipeline fails?"
+
+A: "Excellent question. OpenShift AI provides several recovery mechanisms:
+
+* **Automatic retries**: Transient failures retry automatically
+* **Email alerts**: Ops team notified of persistent failures
+* **Rollback**: Previous knowledge base version remains active
+* **Debugging**: Full logs and metrics available for troubleshooting
+
+The key is failing safely. A failed pipeline doesn't break production—it just prevents a bad update from being deployed."
+
+== Part 6 — Business Value Demonstration
+
+=== Know
+
+_RAG with OpenShift AI delivers measurable business outcomes that justify platform investment._
+
+**Quantified Benefits:**
+
+* **Time to update knowledge**: 6-8 weeks → 10 minutes (99% reduction)
+* **Cost per update**: $100K-500K (retraining) → <$100 (RAG pipeline)
+* **Support escalations**: 40% reduction through accurate responses
+* **Developer productivity**: 60% improvement (no infrastructure management)
+* **Time to market**: Deploy new AI capabilities in days vs months
+
+**ROI Calculation:**
+
+Example for mid-size organization (1000 support queries/day):
+
+* **Current cost**: 40% escalations × 1000 queries × $20/escalation = $8K/day
+* **With RAG**: 70% reduction → 12% escalations × 1000 queries × $20 = $2.4K/day
+* **Savings**: $5.6K/day = $2M/year in support costs alone
+* **Platform cost**: ~$200K/year (OpenShift + OpenShift AI)
+* **ROI**: 10× return in first year, improving each year
+
+=== Show
+
+**What I say:**
+
+"Let's summarize what we've demonstrated and the business value it delivers."
+
+**What I do:**
+
+. **Recap the workflow:**
+   * "We showed you how organizations can build enterprise AI with RAG"
+   * "Knowledge base updates take minutes instead of weeks"
+   * "Automated quality validation ensures accuracy"
+   * "Data scientists and ops teams both have tools that fit their workflows"
+
+. **Emphasize key differentiators:**
+   * "**Red Hat OpenShift AI** provides the enterprise platform"
+   * "**Self-service** for data scientists, governance for IT"
+   * "**Automated pipelines** keep knowledge current"
+   * "**Production-ready** security, scalability, and monitoring"
+
+. **Connect to customer priorities:**
+   * "How does this align with your AI strategy?"
+   * "What use cases could you address with RAG?"
+   * "What are your biggest concerns about AI deployment?"
+
+**What they should notice:**
+
+✓ End-to-end solution (not just a technology demo)
+✓ Enterprise capabilities (security, governance, automation)
+✓ Business outcomes (cost savings, faster time-to-value)
+✓ **Next steps**: Clear path from POC to production
+
+**Presenter tip:**
+
+Tailor this to your audience:
+
+* **Technical**: Focus on developer experience and integration capabilities
+* **Executive**: Emphasize ROI, risk mitigation, and competitive advantage
+* **Procurement**: Highlight platform consolidation and total cost of ownership
+
+**If asked:**
+
+Q: "What are the next steps?"
+
+A: "Great question. Here's the typical journey:
+
+**Week 1-2: Proof of Concept**
+
+* Use this demo environment as starting point
+* Load your company's documentation (100-1000 docs)
+* Test with real user questions
+* Validate accuracy and performance
+
+**Week 3-4: Pilot Deployment**
+
+* Select one use case (customer support, internal FAQ, etc.)
+* Deploy to limited user group (50-100 people)
+* Collect feedback and metrics
+* Iterate on retrieval and response quality
+
+**Month 2: Production Rollout**
+
+* Scale to full user base
+* Implement automated knowledge updates
+* Integrate with existing systems (CRM, helpdesk, etc.)
+* Establish monitoring and alerting
+
+**Month 3+: Expansion**
+
+* Add more use cases (content generation, personalization, etc.)
+* Optimize costs and performance
+* Build internal AI/ML expertise
+* Expand to other departments
+
+We can help at every step—from architecture design to production deployment to ongoing optimization."
+
+== Troubleshooting
+
+=== Common Issues and Resolutions
+
+**Issue 1: Missing Pods in ic-shared-rag-llm**
+
+If you don't see all expected pods running:
+
+**Symptoms:**
+
+* Pipeline server pods missing
+* Database connection pods not running
+
+**Resolution:**
+
+. Delete the DataSciencePipelinesApplication (DSPA):
++
+[source,bash]
+----
+oc get dspa -n ic-shared-rag-llm
+oc delete dspa pipelines-definition -n ic-shared-rag-llm
+----
+
+. Resync in Argo CD with prune option:
+   * Navigate to Argo CD console
+   * Find application: `ds-rag-pipelines`
+   * Click "Sync" → Enable "Prune" option
+   * Sync the application
+
+image::demo/troubleshooting-rag.png[Expected pods in RAG project,align="center",width=800,title="Troubleshooting - Expected Pods"]
+
+image::demo/check-argo-1.png[Argo CD application health,align="center",width=700,title="Argo CD - Verify Application Health"]
+
+image::demo/check-argo-2.png[Argo CD sync with prune,align="center",width=700,title="Argo CD - Sync with Prune"]
+
+**Issue 2: Pipeline Fails with Storage Error**
+
+**Symptoms:**
+
+* Pipeline run fails at Task 1 or Task 4
+* Error message mentions S3 or MinIO connection
+
+**Resolution:**
+
+Verify MinIO route is correctly configured in pipeline server:
+
+. Check MinIO route:
++
+[source,bash]
+----
+oc get route minio-s3 -n ic-shared-rag-minio
+----
+
+. Update Data Science Pipeline configuration:
+   * OpenShift AI dashboard → Data Science Projects
+   * ic-shared-rag-llm → Pipelines
+   * Edit → Cloud Object Storage → Update endpoint
+
+**Issue 3: Workbench Won't Start**
+
+**Symptoms:**
+
+* Workbench shows "Starting" for >5 minutes
+* Pod is in CrashLoopBackOff or ImagePullBackOff
+
+**Resolution:**
+
+. Check pod status:
++
+[source,bash]
+----
+oc get pods -n ic-shared-rag-llm | grep workbench
+oc describe pod <workbench-pod-name> -n ic-shared-rag-llm
+----
+
+. Common fixes:
+   * **ImagePullBackOff**: Check image registry credentials
+   * **CrashLoopBackOff**: Check resource quotas (CPU/memory)
+   * **PVC issues**: Verify persistent volume claims are bound
+
+**Issue 4: Pipeline Takes Too Long**
+
+**Symptoms:**
+
+* Pipeline runs for >20 minutes
+* Tasks seem stuck
+
+**Resolution:**
+
+. Check task logs to identify slow step:
+   * OpenShift AI dashboard → Pipelines → Select run → View logs
+   * Or OpenShift console → Workloads → Pods → Find pipeline pod → Logs
+
+. Common causes:
+   * **Large document upload**: Task 1 ingesting many documents
+   * **Slow LLM inference**: Task 3 response testing with cold model
+   * **Network issues**: Connectivity to external services
+
+== Summary
+
+**Key Takeaways:**
+
+. **Problem**: Standard LLMs lack company-specific knowledge and are expensive to update
+. **Solution**: RAG augments LLMs with your documentation through vector retrieval
+. **Platform**: OpenShift AI provides enterprise capabilities for RAG deployment
+. **Workflow**: Automated pipelines ensure quality and keep knowledge current
+. **Business Value**: 99% faster updates, 70% cost reduction, measurable ROI
+
+**Next Steps for Customers:**
+
+* **Try it**: Request access to this demo environment
+* **Plan**: Identify first use case for RAG deployment
+* **POC**: Load your documentation and test with real queries
+* **Deploy**: Production rollout with Red Hat support

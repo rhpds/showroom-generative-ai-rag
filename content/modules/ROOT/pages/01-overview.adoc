@@ -1,0 +1,118 @@
+= ChatOps generative AI with LLM, RAG and data science pipelines
+
+Demonstrating how Red Hat OpenShift AI enables businesses to build sophisticated AI-powered chatbots using large language models (LLMs) and retrieval-augmented generation (RAG).
+
+== Background
+
+Organizations today face increasing pressure to deliver exceptional customer experiences through intelligent automation. Traditional chatbots often fail to provide accurate, context-aware responses, leading to customer frustration and increased support costs.
+
+**The Business Challenge:**
+
+Companies need chatbots that can:
+
+* Answer complex questions about proprietary products and services
+* Provide accurate responses based on internal documentation
+* Adapt to changing business knowledge without expensive model retraining
+* Scale to handle thousands of concurrent customer interactions
+
+**Enter RAG with OpenShift AI:**
+
+This demo shows how combining large language models with retrieval-augmented generation on Red Hat OpenShift AI solves these challenges, delivering:
+
+* Accurate responses grounded in your company's documentation
+* Cost-effective knowledge updates without model retraining
+* Enterprise-grade security and governance
+* Automated ML pipelines for continuous improvement
+
+== Problem
+
+Traditional approaches to building intelligent chatbots face significant challenges:
+
+**Challenge 1: Generic LLM responses**
+
+* Out-of-the-box LLMs lack knowledge of your specific products and services
+* Generic responses don't address customer-specific questions
+* Hallucinations lead to incorrect information being provided
+
+**Challenge 2: Expensive model retraining**
+
+* Retraining large language models requires significant GPU resources
+* Training cycles take weeks to months
+* Costs can reach hundreds of thousands of dollars
+* Knowledge becomes stale quickly after training
+
+**Challenge 3: Lack of enterprise governance**
+
+* No control over model behavior and responses
+* Difficulty ensuring compliance with industry regulations
+* Limited visibility into how AI makes decisions
+* Security concerns with cloud-based AI services
+
+**The Impact:**
+
+* **Customer satisfaction**: Generic chatbot responses lead to 40% higher escalation rates to human agents
+* **Operational costs**: Model retraining for each knowledge update is prohibitively expensive
+* **Time to market**: 6-8 weeks to update chatbot knowledge vs real-time business needs
+* **Competitive disadvantage**: Inability to provide AI-powered experiences customers expect
+
+== Solution Overview
+
+**RAG with Red Hat OpenShift AI**
+
+Retrieval-augmented generation (RAG) solves these challenges by combining the reasoning capabilities of large language models with your organization's proprietary knowledge base.
+
+**How it works:**
+
+. **Knowledge ingestion**: Upload your company's documentation (PDFs, web content, internal wikis)
+. **Vector storage**: Documents are processed and stored in a vector database for fast retrieval
+. **Intelligent retrieval**: When users ask questions, relevant document sections are retrieved
+. **Contextual generation**: The LLM generates responses based on retrieved documents
+. **Continuous improvement**: Automated pipelines update knowledge and validate quality
+
+**Business Benefits:**
+
+* **Enhanced customer support**: 70% reduction in escalations through accurate, context-aware responses
+* **Content creation**: Automated generation of product descriptions, FAQs, and marketing materials
+* **Personalized recommendations**: Analysis of customer data to drive tailored product suggestions
+* **Efficient knowledge management**: Centralized documentation accessible through natural language queries
+* **Adaptive learning**: Continuous training with new data improves accuracy over time
+
+**Why Red Hat OpenShift AI:**
+
+* **Accelerated workflows**: Simplify development, deployment, and management of AI/ML models
+* **Improved collaboration**: Centralized platform for data scientists and IT operations
+* **Enhanced scalability**: Scale AI initiatives up or down based on business demands
+* **Increased security**: Role-based access control, encryption, and enterprise governance
+* **Greater flexibility**: Deploy on-premise, cloud, or hybrid environments
+
+== Common Customer Questions
+
+**"How does this work with our existing tools?"**
+
+OpenShift AI integrates with your existing data sources, Git repositories, and CI/CD pipelines. The demo shows integration with Gitea, Tekton Pipelines, and S3-compatible storage.
+
+**"What about compliance and security?"**
+
+OpenShift AI provides enterprise-grade security features including role-based access control, data encryption, and audit logging. RAG keeps your proprietary data on-premise, with no data sent to external LLM providers.
+
+**"How complex is the implementation?"**
+
+The demo shows a complete end-to-end implementation. Data scientists can create pipelines using familiar Jupyter notebook interfaces without deep Kubernetes knowledge. The platform handles infrastructure complexity automatically.
+
+**"What's the business impact timeline?"**
+
+* **Week 1-2**: Proof of concept with sample documents and chatbot interface
+* **Week 3-4**: Production pilot with real documentation and user testing
+* **Month 2**: Full deployment with automated pipeline updates
+* **Month 3+**: Continuous improvement and expanded use cases
+
+**"How do we update the knowledge base?"**
+
+Updates are automated through data science pipelines. Simply add new documents to your source repository, and the pipeline automatically:
+
+* Ingests new content
+* Updates the vector database
+* Validates response quality
+* Monitors performance metrics
+
+No expensive model retraining required.
