@@ -40,7 +40,7 @@ Organizations need confidence that AI infrastructure is production-ready:
    * Username: admin
    * Password: {password}
 
-image::demo/ocp-login.png[OpenShift console login,align="center",width=700,title="OpenShift Console Login"]
+image::demo/ocp-login.png[OpenShift console login,link=self,window=blank,align="center",width=700,title="OpenShift Console Login"]
 
 . **Validate RAG project pods:**
    * Switch to project: `ic-shared-rag-llm`
@@ -48,7 +48,7 @@ image::demo/ocp-login.png[OpenShift console login,align="center",width=700,title
    * Verify all pods are in Running or Completed state
    * Note: Some job pods may show errors initially but should have successful jobs
 
-image::demo/ic-shared-rag-llm.png[RAG project pods status,align="center",width=800,title="RAG Project - All Pods Running"]
+image::demo/ic-shared-rag-llm.png[RAG project pods status,link=self,window=blank,align="center",width=800,title="RAG Project - All Pods Running"]
 
 . **Check supporting projects:**
    * Navigate to `ic-shared-rag-db`: PostgreSQL with pgvector
@@ -115,7 +115,7 @@ _OpenShift AI organizes AI/ML work into data science projects that contain workb
    * Search for "llm" in the project list
    * Select "Shared LLM with RAG" data science project
 
-image::demo/ds-project.png[Data science project selection,align="center",width=700,title="OpenShift AI - Data Science Projects"]
+image::demo/ds-project.png[Data science project selection,link=self,window=blank,align="center",width=700,title="OpenShift AI - Data Science Projects"]
 
 . **Review project components:**
    * **Workbenches**: "Shared RAG LLM Workbench" (may need to be created if not exists)
@@ -123,7 +123,7 @@ image::demo/ds-project.png[Data science project selection,align="center",width=7
    * **Pipelines**: Automated data ingestion and quality validation
    * **Models**: LLM serving endpoints (if configured)
 
-image::demo/shared-rag-llm-project.png[RAG project details,align="center",width=800,title="RAG Project Components"]
+image::demo/shared-rag-llm-project.png[RAG project details,link=self,window=blank,align="center",width=800,title="RAG Project Components"]
 
 . **Create workbench (if needed):**
    * Click "Create workbench"
@@ -132,7 +132,7 @@ image::demo/shared-rag-llm-project.png[RAG project details,align="center",width=
    * Container size: Medium (2 CPU, 8Gi RAM recommended)
    * Click "Create workbench"
 
-image::demo/llm-workbench.png[Workbench creation,align="center",width=700,title="Creating Jupyter Workbench"]
+image::demo/llm-workbench.png[Workbench creation,link=self,window=blank,align="center",width=700,title="Creating Jupyter Workbench"]
 
 **What they should notice:**
 
@@ -194,16 +194,16 @@ _Automated pipelines ensure consistent, repeatable updates to the RAG knowledge 
      link:https://github.com/ritzshah/llm-rag-deployment/blob/update-token-v1/examples/pipelines/working-new-llm-ingestion-test.yaml[working-new-llm-ingestion-test.yaml^]
    * Upload the downloaded YAML file
 
-image::demo/import-pipeline-1.png[Import pipeline step 1,align="center",width=700,title="Import Pipeline Definition"]
+image::demo/import-pipeline-1.png[Import pipeline step 1,link=self,window=blank,align="center",width=700,title="Import Pipeline Definition"]
 
-image::demo/import-pipeline-2.png[Import pipeline upload,align="center",width=700,title="Upload Pipeline YAML"]
+image::demo/import-pipeline-2.png[Import pipeline upload,link=self,window=blank,align="center",width=700,title="Upload Pipeline YAML"]
 
 . **Review pipeline DAG:**
    * OpenShift AI displays the directed acyclic graph (DAG)
    * 4 tasks shown: Ingest → Validate → Test → Summarize
    * Arrows show dependencies (sequential execution)
 
-image::demo/dag.png[Pipeline DAG visualization,align="center",width=800,title="Pipeline DAG - 4 Tasks"]
+image::demo/dag.png[Pipeline DAG visualization,link=self,window=blank,align="center",width=800,title="Pipeline DAG - 4 Tasks"]
 
 . **Create pipeline run:**
    * Click "Create run"
@@ -213,9 +213,9 @@ image::demo/dag.png[Pipeline DAG visualization,align="center",width=800,title="P
      * **Pipeline**: Select the imported pipeline
      * **Run type**: Immediate (or schedule for recurring)
 
-image::demo/create-run.png[Create pipeline run,align="center",width=700,title="Create Pipeline Run"]
+image::demo/create-run.png[Create pipeline run,link=self,window=blank,align="center",width=700,title="Create Pipeline Run"]
 
-image::demo/create-run-2.png[Pipeline run parameters,align="center",width=700,title="Configure Run Parameters"]
+image::demo/create-run-2.png[Pipeline run parameters,link=self,window=blank,align="center",width=700,title="Configure Run Parameters"]
 
 . **Start the run:**
    * Click "Create Run"
@@ -256,7 +256,7 @@ image::demo/create-run-2.png[Pipeline run parameters,align="center",width=700,ti
 * Store results in MinIO S3 bucket
 * Generate quality report
 
-image::demo/task-run-1.png[Pipeline tasks overview,align="center",width=800,title="Pipeline Tasks - 4 Steps"]
+image::demo/task-run-1.png[Pipeline tasks overview,link=self,window=blank,align="center",width=800,title="Pipeline Tasks - 4 Steps"]
 
 . **Monitor execution:**
 
@@ -266,7 +266,7 @@ image::demo/task-run-1.png[Pipeline tasks overview,align="center",width=800,titl
 * Green checkmarks for completed tasks
 * Real-time logs for troubleshooting
 
-image::demo/langchain-task-view.png[Task execution in OpenShift AI,align="center",width=800,title="OpenShift AI - Task Execution"]
+image::demo/langchain-task-view.png[Task execution in OpenShift AI,link=self,window=blank,align="center",width=800,title="OpenShift AI - Task Execution"]
 
 **In OpenShift Console:**
 
@@ -274,14 +274,14 @@ image::demo/langchain-task-view.png[Task execution in OpenShift AI,align="center
 * Click pod → Logs to see detailed output
 * Shows actual Python code execution and results
 
-image::demo/data-ingestion-response-check.png[Pipeline run in OpenShift console,align="center",width=800,title="OpenShift Console - Pipeline Execution"]
+image::demo/data-ingestion-response-check.png[Pipeline run in OpenShift console,link=self,window=blank,align="center",width=800,title="OpenShift Console - Pipeline Execution"]
 
 . **View completed pipeline:**
    * All tasks show green checkmarks
    * DAG shows successful execution flow
    * Results stored in S3 bucket
 
-image::demo/successful-run-completion-dag.png[Completed pipeline DAG,align="center",width=800,title="Successful Pipeline Completion"]
+image::demo/successful-run-completion-dag.png[Completed pipeline DAG,link=self,window=blank,align="center",width=800,title="Successful Pipeline Completion"]
 
 **What they should notice:**
 
@@ -339,9 +339,9 @@ _Data scientists use visual pipeline editors to create and manage ML workflows w
    * First login: Use admin credentials
    * Authorize: Allow selected permissions
 
-image::demo/open-test-llm-wkbench.png[Open workbench,align="center",width=700,title="Launch Jupyter Workbench"]
+image::demo/open-test-llm-wkbench.png[Open workbench,link=self,window=blank,align="center",width=700,title="Launch Jupyter Workbench"]
 
-image::demo/authorize-test-llm.png[Authorize workbench access,align="center",width=700,title="Authorize Jupyter Access"]
+image::demo/authorize-test-llm.png[Authorize workbench access,link=self,window=blank,align="center",width=700,title="Authorize Jupyter Access"]
 
 . **Clone the demo repository:**
    * Wait for Jupyter to load (first launch takes ~1 minute)
@@ -350,9 +350,9 @@ image::demo/authorize-test-llm.png[Authorize workbench access,align="center",wid
      link:https://github.com/ritzshah/llm-rag-deployment.git^[https://github.com/ritzshah/llm-rag-deployment.git]
    * **Important**: Switch to branch `update-token-v1`
 
-image::demo/clone-repo.png[Clone Git repository,align="center",width=700,title="Clone Repository in Jupyter"]
+image::demo/clone-repo.png[Clone Git repository,link=self,window=blank,align="center",width=700,title="Clone Repository in Jupyter"]
 
-image::demo/update-branch.png[Switch to branch,align="center",width=700,title="Switch to update-token-v1 Branch"]
+image::demo/update-branch.png[Switch to branch,link=self,window=blank,align="center",width=700,title="Switch to update-token-v1 Branch"]
 
 . **Configure pipeline server (one-time setup):**
    * Navigate to OpenShift AI dashboard → Data Science Projects
@@ -363,20 +363,20 @@ image::demo/update-branch.png[Switch to branch,align="center",width=700,title="S
      * Example: `https://minio-s3-ic-shared-rag-minio.apps.cluster-276jx.276jx.sandbox2778.opentlc.com`
      * Update if needed
 
-image::demo/review-ds-pipeline-ui.png[Review pipeline configuration,align="center",width=700,title="Data Science Pipeline Configuration"]
+image::demo/review-ds-pipeline-ui.png[Review pipeline configuration,link=self,window=blank,align="center",width=700,title="Data Science Pipeline Configuration"]
 
-image::demo/minio-route.png[Get MinIO route,align="center",width=700,title="MinIO S3 Route"]
+image::demo/minio-route.png[Get MinIO route,link=self,window=blank,align="center",width=700,title="MinIO S3 Route"]
 
-image::demo/minio-route-update.png[Update pipeline endpoint,align="center",width=700,title="Update Pipeline Endpoint"]
+image::demo/minio-route-update.png[Update pipeline endpoint,link=self,window=blank,align="center",width=700,title="Update Pipeline Endpoint"]
 
-image::demo/dsp-endpoint-check.png[Verify endpoint,align="center",width=700,title="Verify Cloud Object Storage Endpoint"]
+image::demo/dsp-endpoint-check.png[Verify endpoint,link=self,window=blank,align="center",width=700,title="Verify Cloud Object Storage Endpoint"]
 
 . **Open Elyra pipeline editor:**
    * Navigate to: `llm-rag-deployment/examples/pipelines/`
    * Open file: `data_ingestion_response_check.pipeline`
    * Elyra visual editor displays the 4-task pipeline
 
-image::demo/select-pipeline.png[Select pipeline file,align="center",width=700,title="Open Pipeline in Elyra"]
+image::demo/select-pipeline.png[Select pipeline file,link=self,window=blank,align="center",width=700,title="Open Pipeline in Elyra"]
 
 . **Review pipeline tasks:**
    * Each box represents a Python script
@@ -384,7 +384,7 @@ image::demo/select-pipeline.png[Select pipeline file,align="center",width=700,ti
    * Data scientists can drag new Python files to add tasks
    * No YAML editing required
 
-image::demo/task-1-update.png[Pipeline task details,align="center",width=700,title="Task 1 - Data Ingestion Code"]
+image::demo/task-1-update.png[Pipeline task details,link=self,window=blank,align="center",width=700,title="Task 1 - Data Ingestion Code"]
 
 **What they should notice:**
 
@@ -404,20 +404,20 @@ image::demo/task-1-update.png[Pipeline task details,align="center",width=700,tit
    * Click "OK" to submit
    * Pipeline creates Tekton PipelineRun in OpenShift automatically
 
-image::demo/run-pipeline.png[Submit pipeline run,align="center",width=700,title="Submit Pipeline from Elyra"]
+image::demo/run-pipeline.png[Submit pipeline run,link=self,window=blank,align="center",width=700,title="Submit Pipeline from Elyra"]
 
 . **Monitor pipeline execution:**
    * Elyra shows submission confirmation
    * Click "Run Details" to view in OpenShift AI dashboard
    * Or navigate to: Experiments → Experiments and runs
 
-image::demo/job-submission.png[Pipeline submission confirmation,align="center",width=700,title="Pipeline Submitted Successfully"]
+image::demo/job-submission.png[Pipeline submission confirmation,link=self,window=blank,align="center",width=700,title="Pipeline Submitted Successfully"]
 
-image::demo/check-data-pipeline-elyra.png[Pipeline in dashboard,align="center",width=700,title="Pipeline Execution in Dashboard"]
+image::demo/check-data-pipeline-elyra.png[Pipeline in dashboard,link=self,window=blank,align="center",width=700,title="Pipeline Execution in Dashboard"]
 
-image::demo/data-ingestion-response-check-graph.png[Pipeline graph view,align="center",width=700,title="Pipeline Execution Graph"]
+image::demo/data-ingestion-response-check-graph.png[Pipeline graph view,link=self,window=blank,align="center",width=700,title="Pipeline Execution Graph"]
 
-image::demo/run-check-main-ui.png[Pipeline run details,align="center",width=700,title="Pipeline Run Status"]
+image::demo/run-check-main-ui.png[Pipeline run details,link=self,window=blank,align="center",width=700,title="Pipeline Run Status"]
 
 **What they should notice:**
 
@@ -445,9 +445,9 @@ A: "Absolutely. Let me show you quickly." (Demonstrate if time permits)
 * Connect it to existing tasks (click output → input to draw lines)
 * Submit the updated pipeline
 
-image::demo/drag-task-elyra.png[Drag new task,align="center",width=700,title="Drag Python File to Add Task"]
+image::demo/drag-task-elyra.png[Drag new task,link=self,window=blank,align="center",width=700,title="Drag Python File to Add Task"]
 
-image::demo/drag-task-elyra-step1.png[Connect tasks,align="center",width=700,title="Connect Tasks in Pipeline"]
+image::demo/drag-task-elyra-step1.png[Connect tasks,link=self,window=blank,align="center",width=700,title="Connect Tasks in Pipeline"]
 
 "Data scientists can evolve pipelines without infrastructure team involvement. This accelerates AI development significantly."
 
@@ -654,11 +654,11 @@ oc delete dspa pipelines-definition -n ic-shared-rag-llm
    * Click "Sync" → Enable "Prune" option
    * Sync the application
 
-image::demo/troubleshooting-rag.png[Expected pods in RAG project,align="center",width=800,title="Troubleshooting - Expected Pods"]
+image::demo/troubleshooting-rag.png[Expected pods in RAG project,link=self,window=blank,align="center",width=800,title="Troubleshooting - Expected Pods"]
 
-image::demo/check-argo-1.png[Argo CD application health,align="center",width=700,title="Argo CD - Verify Application Health"]
+image::demo/check-argo-1.png[Argo CD application health,link=self,window=blank,align="center",width=700,title="Argo CD - Verify Application Health"]
 
-image::demo/check-argo-2.png[Argo CD sync with prune,align="center",width=700,title="Argo CD - Sync with Prune"]
+image::demo/check-argo-2.png[Argo CD sync with prune,link=self,window=blank,align="center",width=700,title="Argo CD - Sync with Prune"]
 
 **Issue 2: Pipeline Fails with Storage Error**
 

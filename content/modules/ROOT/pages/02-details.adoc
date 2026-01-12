@@ -30,7 +30,7 @@ Ask a standard LLM "What is the latest release of Red Hat OpenShift AI?" and it 
 * Generic information not specific to your environment
 * Hallucinated version numbers that don't exist
 
-image::chat-without-rag.png[Chatbot response without RAG showing generic answer,align="center",width=700,title="Chatbot Without RAG - Generic Response"]
+image::chat-without-rag.png[Chatbot response without RAG showing generic answer,link=self,window=blank,align="center",width=700,title="Chatbot Without RAG - Generic Response"]
 
 === How RAG Solves This
 
@@ -58,7 +58,7 @@ After adding Red Hat OpenShift AI documentation to RAG, the chatbot provides:
 * Links to relevant documentation sections
 * Company-specific deployment guidance
 
-image::chat-with-rag.png[Chatbot response with RAG showing accurate answer from documentation,align="center",width=700,title="Chatbot With RAG - Accurate Response"]
+image::chat-with-rag.png[Chatbot response with RAG showing accurate answer from documentation,link=self,window=blank,align="center",width=700,title="Chatbot With RAG - Accurate Response"]
 
 == RAG Architecture
 
@@ -67,7 +67,7 @@ A typical RAG application has two main components:
 . **Indexing**: Pipeline for ingesting data from sources and indexing it (offline)
 . **Retrieval and generation**: RAG chain that retrieves relevant data and generates responses (runtime)
 
-image::llm-rag-architecture.png[RAG architecture diagram showing indexing and retrieval,align="center",width=600,title="RAG Architecture Overview"]
+image::llm-rag-architecture.png[RAG architecture diagram showing indexing and retrieval,link=self,window=blank,align="center",width=600,title="RAG Architecture Overview"]
 
 === Indexing Phase
 
@@ -79,7 +79,7 @@ The indexing phase prepares your documents for fast retrieval:
 * DocumentLoaders handle different file formats
 * Extract text content while preserving structure
 
-image::load-split-embed-store.png[Document indexing flow,align="center",width=700,title="Document Indexing: Load → Split → Embed → Store"]
+image::load-split-embed-store.png[Document indexing flow,link=self,window=blank,align="center",width=700,title="Document Indexing: Load → Split → Embed → Store"]
 
 **Split:**
 
@@ -113,7 +113,7 @@ When users ask questions, the RAG system:
 * Retrieve top K most relevant document sections (typically 3-5)
 * Rank results by relevance score
 
-image::retrieve-llm.png[Retrieval and LLM generation flow,align="center",width=700,title="Runtime: Retrieve → Generate Response"]
+image::retrieve-llm.png[Retrieval and LLM generation flow,link=self,window=blank,align="center",width=700,title="Runtime: Retrieve → Generate Response"]
 
 **Generate:**
 
@@ -277,8 +277,8 @@ Red Hat OpenShift AI provides the platform for building, deploying, and managing
 * Adapt to changing customer needs
 * Stay current with evolving business landscape
 
-image::business-benefits-llm-rag.png[Business benefits infographic,align="center",width=800,title="Business Benefits of LLM with RAG"]
+image::business-benefits-llm-rag.png[Business benefits infographic,link=self,window=blank,align="center",width=800,title="Business Benefits of LLM with RAG"]
 
 == LLM + RAG Summary
 
-image::llm-rag-summary-diagram.png[Summary diagram of LLM and RAG integration,align="center",width=800,title="LLM + RAG Solution Architecture"]
+image::llm-rag-summary-diagram.png[Summary diagram of LLM and RAG integration,link=self,window=blank,align="center",width=800,title="LLM + RAG Solution Architecture"]

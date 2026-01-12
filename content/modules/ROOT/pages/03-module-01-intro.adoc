@@ -42,7 +42,7 @@ RAG solves these challenges without expensive model retraining, enabling accurat
 
 **Visual aid:**
 
-image::chat-without-rag.png[Generic chatbot response without RAG,align="center",width=700,title="Without RAG: Generic Response"]
+image::chat-without-rag.png[Generic chatbot response without RAG,link=self,window=blank,align="center",width=700,title="Without RAG: Generic Response"]
 
 **What they should notice:**
 
@@ -121,7 +121,7 @@ _RAG augments LLM knowledge by retrieving relevant context from your documentati
   * "Convert to embeddings" (point to embedding model)
   * "Store in vector database" (point to pgvector)
 
-image::llm-rag-architecture.png[RAG architecture overview,align="center",width=600,title="RAG Architecture"]
+image::llm-rag-architecture.png[RAG architecture overview,link=self,window=blank,align="center",width=600,title="RAG Architecture"]
 
 * Walk through runtime flow:
   * "User asks question" (point to input)
@@ -129,9 +129,9 @@ image::llm-rag-architecture.png[RAG architecture overview,align="center",width=6
   * "LLM generates response with context" (point to generation step)
   * "User gets accurate answer" (point to output)
 
-image::load-split-embed-store.png[Document indexing process,align="center",width=700,title="Indexing: Load → Split → Embed → Store"]
+image::load-split-embed-store.png[Document indexing process,link=self,window=blank,align="center",width=700,title="Indexing: Load → Split → Embed → Store"]
 
-image::retrieve-llm.png[Retrieval and generation flow,align="center",width=700,title="Runtime: Retrieve Context → Generate Response"]
+image::retrieve-llm.png[Retrieval and generation flow,link=self,window=blank,align="center",width=700,title="Runtime: Retrieve Context → Generate Response"]
 
 **What they should notice:**
 
@@ -210,7 +210,7 @@ _RAG with OpenShift AI delivers measurable business outcomes across multiple dim
 * Walk through each category with specific metrics
 * Highlight 2-3 customer success stories if available
 
-image::business-benefits-llm-rag.png[Business benefits of LLM with RAG,align="center",width=800,title="Measurable Business Benefits"]
+image::business-benefits-llm-rag.png[Business benefits of LLM with RAG,link=self,window=blank,align="center",width=800,title="Measurable Business Benefits"]
 
 **What they should notice:**
 
@@ -249,7 +249,7 @@ Most customers see ROI within 3-6 months just from support cost savings."
 
 == Summary
 
-image::llm-rag-summary-diagram.png[LLM and RAG integration summary,align="center",width=800,title="Solution Architecture Summary"]
+image::llm-rag-summary-diagram.png[LLM and RAG integration summary,link=self,window=blank,align="center",width=800,title="Solution Architecture Summary"]
 
 **Key Messages to Emphasize:**
 
