@@ -1,181 +1,158 @@
 = ChatOps generative AI with LLM, RAG and data science pipelines
 
-Welcome to this demonstration of how Red Hat OpenShift AI enables businesses to build sophisticated AI-powered chatbots using large language models (LLMs) and retrieval-augmented generation (RAG).
+Welcome to this demonstration of retrieval-augmented generation (RAG) on Red Hat OpenShift AI. This presenter-led demo shows how organizations build AI-powered chatbots with company-specific knowledge, eliminating expensive model retraining.
 
-== About This Demo
+== What This Demo Covers
 
-This demonstration explores how to leverage the power of LLMs with RAG within the Red Hat OpenShift AI environment. You'll see how businesses can:
+This demonstration focuses on three key areas:
 
-* Build chatbots that answer complex questions with company-specific knowledge
-* Enhance customer interactions with accurate, context-aware responses
-* Streamline operations through automated knowledge management
-* Deploy enterprise-grade AI without expensive model retraining
+**Business Outcomes:**
 
-**Key Insight:** Traditional LLMs lack knowledge about your company's products, services, and internal documentation. RAG solves this by augmenting LLMs with your proprietary knowledge base—without the cost and complexity of model retraining.
-
-== What You'll Learn
-
-**Business Value:**
-
-* How RAG reduces AI deployment costs by 10× compared to model retraining
-* Why organizations achieve 70% reduction in support escalations with RAG
-* The business case for enterprise AI platforms vs point solutions
-* ROI timelines and success metrics for RAG deployments
+* 10× cost reduction compared to LLM retraining
+* 70% reduction in customer support escalations
+* Minutes (not weeks) to update AI knowledge bases
+* Enterprise governance and security for production AI
 
 **Technical Capabilities:**
 
-* RAG architecture: indexing, retrieval, and generation workflows
-* OpenShift AI platform features for building production AI applications
-* Automated data science pipelines for knowledge base updates
-* Developer workflows using Jupyter notebooks and visual pipeline editors
+* RAG architecture for grounding LLMs in proprietary data
+* Automated data science pipelines for knowledge updates
+* OpenShift AI platform for building production AI applications
+* Dual workflows for admins and data scientists
 
-**Demo Highlights:**
+**Live Demonstration:**
 
-* Live demonstration of RAG chatbot with company-specific knowledge
-* Automated pipeline for ingesting documentation and validating quality
-* Two workflows: admin (infrastructure as code) and data scientist (visual editor)
-* Production-ready monitoring, GitOps automation, and troubleshooting
+* End-to-end RAG implementation on OpenShift AI
+* Automated quality validation and monitoring
+* GitOps continuous delivery with Argo CD
+* Production troubleshooting and best practices
 
 == Demo Structure
 
-This demo is organized into 5 modules using the **Know/Show** structure designed for presenter-led demonstrations:
+This demo uses the **Know/Show methodology** designed for presenter-led demonstrations:
 
-**Module 1: Overview** (5-10 minutes)
+**Module 1: xref:01-overview.adoc[Overview]** (5-10 minutes)
 
-* Business challenges with generic LLMs
-* How RAG solves the knowledge gap
-* Value proposition and ROI summary
+Business challenges, RAG solution overview, and customer questions
 
-**Module 2: Technical Background** (10-15 minutes)
+**Module 2: xref:02-details.adoc[Technical Background]** (10-15 minutes)
 
-* Deep dive into RAG architecture
-* OpenShift AI platform capabilities
-* Integration with enterprise workflows
+RAG architecture deep dive and OpenShift AI integration
 
-**Module 3: Demo Part 1 - Understanding RAG** (15-20 minutes)
+**Module 3: xref:03-module-01-intro.adoc[Demo Part 1: Understanding RAG]** (15-20 minutes)
 
-* Visual explanation of RAG components
-* Business impact of retrieval-augmented generation
-* Preparation for live demonstration
+Visual explanation of RAG components and business impact
 
-**Module 4: Demo Part 2 - Live Demonstration** (30-40 minutes)
+**Module 4: xref:04-module-02-demo.adoc[Demo Part 2: Live Demonstration]** (30-40 minutes)
 
-* Environment validation and setup
-* Automated RAG pipelines (admin and data scientist workflows)
-* Quality validation and monitoring
-* Troubleshooting guidance
+Environment setup, pipeline automation, and quality validation
 
-**Module 5: Conclusion and Next Steps** (10-15 minutes)
+**Module 5: xref:05-conclusion.adoc[Conclusion and Next Steps]** (10-15 minutes)
 
-* Business impact recap and ROI analysis
-* Customer success path (POC → pilot → production)
-* Q&A and follow-up resources
+Business impact recap, ROI analysis, and customer success path
 
-**Total demo time:** 70-100 minutes (adjust based on audience depth)
+**Total demo time:** 70-100 minutes (adjust based on audience)
 
-== Know/Show Structure
+== Know/Show Methodology
 
-This demo uses the **Know/Show** methodology:
+Each demo module separates business context from technical demonstration:
 
-**Know Sections:**
+**Know Sections** provide:
 
-* Business context and challenges
-* Value propositions and benefits
+* Business challenges and value propositions
 * Strategic insights for decision makers
-* Why this technology matters
+* Why this technology matters to the organization
 
-**Show Sections:**
+**Show Sections** provide:
 
 * Step-by-step presenter instructions
-* What to demonstrate and how
-* Expected outcomes and key talking points
-* Handling questions and objections
+* What to demonstrate and expected outcomes
+* Talking points and objection handling
 
-**Benefits of This Approach:**
-
-* Presenters understand business value before demonstrating features
-* Consistent messaging across different presenters
-* Flexibility to adjust depth based on audience
-* Clear separation of business context from technical steps
+**Benefits:** Presenters understand business value before demonstrating features, enabling consistent messaging across different audiences and presentation styles.
 
 == Target Audiences
 
-This demo is designed for multiple audiences:
-
-**Technical Managers:**
-
-* Focus on: Platform capabilities, developer productivity, integration
-* Emphasize: Self-service workflows, automated operations, enterprise governance
+Tailor your presentation based on who's watching:
 
 **C-Level Executives:**
 
-* Focus on: Business outcomes, ROI, competitive advantage
+* Focus: Business outcomes, ROI, competitive advantage
 * Emphasize: Cost savings, time-to-value, risk mitigation
+* Time: 30-45 minutes (overview + key highlights)
+
+**Technical Managers:**
+
+* Focus: Platform capabilities, developer productivity, integration
+* Emphasize: Self-service workflows, automated operations, enterprise governance
+* Time: 60-75 minutes (full technical depth)
 
 **Data Scientists:**
 
-* Focus on: Development workflows, model serving, pipeline automation
-* Emphasize: Familiar tools (Jupyter, Python), no Kubernetes expertise required
+* Focus: Development workflows, model serving, pipeline automation
+* Emphasize: Jupyter notebooks, Python, no Kubernetes expertise required
+* Time: 75-90 minutes (full demo with deep dives)
 
 **Platform Engineers:**
 
-* Focus on: Infrastructure, scalability, GitOps automation
+* Focus: Infrastructure, scalability, GitOps automation
 * Emphasize: OpenShift integration, monitoring, troubleshooting
+* Time: 75-90 minutes (full demo with operational focus)
 
 == Prerequisites
 
 **For Presenters:**
 
 * Access to pre-deployed RAG environment on OpenShift
-* Basic understanding of AI/ML concepts (LLMs, embeddings, vector databases)
-* Familiarity with OpenShift console and OpenShift AI dashboard
-* Review of all demo modules before presenting
+* Review of xref:01-overview.adoc[Overview] and xref:04-module-02-demo.adoc[Live Demonstration] modules
+* Basic understanding of AI/ML concepts and OpenShift
+* 30-60 minutes to practice demo flow
 
 **For Audience:**
 
 * No technical prerequisites required
-* Basic understanding of AI chatbots helpful but not required
-* Interest in enterprise AI deployment and operations
+* Interest in enterprise AI deployment strategies
+* Questions encouraged throughout the demonstration
 
 == Getting Started
 
-**If you're a presenter:**
+**Presenters: Prepare for Your Demo**
 
-. Review xref:01-overview.adoc[Module 1: Overview] for business context
-. Read through xref:04-module-02-demo.adoc[Module 4: Live Demonstration] for technical steps
-. Practice the demo flow in a test environment
-. Customize talking points based on your audience
+. **Review business context**: xref:01-overview.adoc[Module 1: Overview] - business challenges, solution overview, customer questions
+. **Study technical steps**: xref:04-module-02-demo.adoc[Module 4: Live Demonstration] - complete walkthrough with presenter guidance
+. **Practice in test environment**: Validate all components are running before presenting
+. **Customize for your audience**: Use xref:01-overview.adoc#common-customer-questions[Common Customer Questions] to anticipate and prepare responses
 
-**If you're evaluating this demo for your organization:**
+**Evaluators: Explore at Your Own Pace**
 
-. Start with xref:01-overview.adoc[Module 1: Overview] to understand the business value
-. Review xref:02-details.adoc[Module 2: Technical Background] for architecture details
-. Watch the live demonstration (or request a custom demo from Red Hat)
-. See xref:05-conclusion.adoc[Module 5: Conclusion] for next steps and resources
+. **Understand business value**: xref:01-overview.adoc[Module 1: Overview] - why RAG matters for your organization
+. **Learn the architecture**: xref:02-details.adoc[Module 2: Technical Background] - how RAG works under the hood
+. **See it in action**: xref:04-module-02-demo.adoc[Module 4: Live Demonstration] - complete implementation walkthrough
+. **Plan next steps**: xref:05-conclusion.adoc[Module 5: Conclusion] - POC, pilot, and production roadmap
 
 == Demo Environment
 
-**What's Included:**
+**What's Deployed:**
 
-* **OpenShift cluster**: Enterprise Kubernetes platform
-* **OpenShift AI**: Complete AI/ML platform with Jupyter, pipelines, and model serving
-* **RAG components**:
-  * PostgreSQL with pgvector extension (vector database)
-  * LLM model serving (Granite, Mistral, or CodeLlama)
-  * Gradio chatbot interface
-  * MinIO S3-compatible storage
-* **Automation**: Argo CD for GitOps, Tekton for pipelines
-* **Sample data**: Red Hat OpenShift AI documentation for testing
+* Red Hat OpenShift Container Platform (Kubernetes)
+* Red Hat OpenShift AI 2.9 (complete AI/ML platform)
+* PostgreSQL with pgvector (vector database for semantic search)
+* LLM model serving (Granite, Mistral, or CodeLlama)
+* Gradio chatbot interface (user-facing application)
+* MinIO S3 storage (pipeline artifacts)
+* Argo CD (GitOps continuous delivery)
+* Tekton Pipelines (workflow automation)
 
 **Access Information:**
 
-Demo credentials and URLs are provided by your Red Hat account team or found in the "Advanced settings" section of your deployed service on demo.redhat.com.
+Demo credentials and URLs are provided by your Red Hat account team or found in the "Advanced settings" section of your deployed service at link:https://demo.redhat.com^[demo.redhat.com^] or link:https://integration.demo.redhat.com^[integration.demo.redhat.com^].
 
-== Quick Links
+== Quick Navigation
 
 **Jump to Key Sections:**
 
 * xref:01-overview.adoc#common-customer-questions[Common Customer Questions]
+* xref:02-details.adoc#what-is-rag[What is RAG?]
 * xref:03-module-01-intro.adoc#part-3-business-impact-real-world-benefits[Business Benefits of RAG]
 * xref:04-module-02-demo.adoc#part-3-automated-rag-pipelines-admin-persona[Automated RAG Pipelines Demo]
 * xref:04-module-02-demo.adoc#troubleshooting[Troubleshooting Guide]
@@ -183,7 +160,7 @@ Demo credentials and URLs are provided by your Red Hat account team or found in 
 
 **External Resources:**
 
-* link:https://access.redhat.com/documentation/en-us/red_hat_openshift_ai_self-managed/2.9^[Red Hat OpenShift AI Documentation^]
+* link:https://access.redhat.com/documentation/en-us/red_hat_openshift_ai_self-managed/2.9^[Red Hat OpenShift AI 2.9 Documentation^]
 * link:https://github.com/ritzshah/llm-rag-deployment^[Demo Source Code Repository^]
 * link:https://developers.redhat.com/topics/ai-ml^[Red Hat Developer - AI/ML Resources^]
 
@@ -191,14 +168,14 @@ Demo credentials and URLs are provided by your Red Hat account team or found in 
 
 **Need Help?**
 
-* **Technical issues**: Contact your Red Hat support team
-* **Demo questions**: Reach out to your Red Hat account manager
-* **Content feedback**: Submit issues to the demo repository
+* Technical issues: Contact your Red Hat support team
+* Demo questions: Reach out to your Red Hat account manager
+* Content feedback: Submit issues to the demo repository
 
 **Contributing:**
 
-This demo is continuously improved based on presenter and customer feedback. If you have suggestions for improvements, please share them with the Red Hat demo team.
+This demo is continuously improved based on presenter and customer feedback. Share your suggestions with the Red Hat demo team.
 
 ---
 
-**Ready to get started?** Proceed to xref:01-overview.adoc[Module 1: Overview] to begin the demonstration.
+**Ready to present?** Start with xref:01-overview.adoc[Module 1: Overview] to review business context and customer questions before your demonstration.
