@@ -1,0 +1,263 @@
+= Demo Guide
+
+Login to Openshift console: {openshift_console_url}
+
+username: admin
+
+password: {password}
+
+image::demo/ocp-login.png[]
+
+Ensure that all the pods are running fine on ic-shared-rag-llm project. This is the project configured with RAG along with vectorDB as well as a pipeline server in OpenShift AI Dashboard. The gradio chatbot in there connects to the shared llm deployed in the ic-shared-llm project.
+
+Some job pods initially may have errors but a related job should be in completed state.
+
+
+image::demo/ic-shared-rag-llm.png[]
+
+There are other two related projects ic-shared-rag-db and ic-shared-rag-minio. +
+Open OpenShift AI Dashboard as well as ArgoCD console.
+
+Login to OpenShift AI Dashboard and go to ic-shared-rag-llm data science project to view all the components including workbench pre configured.Search for `llm` and select “Shared LLM with RAG” Data Science Project.
+
+image::demo/ds-project.png[]
+
+Create a workbench named “Shared RAG LLM Workbench” as shown below. Use "Standard Data Science" image for creation of workbench.
+
+image::demo/llm-workbench.png[]
+
+image::demo/shared-rag-llm-project.png[]
+
+There are two ways to work with Data Science Pipelines.
+
+* Importing pipeline manifest directly into OpenShift AI dashboard. (Admin Persona)
+* Creating the pipeline in Elyra pipeline editor, say, developer/data scientist and run from there creating the same effect as point 1. (Data Scientist Persona)
+
+=== Admin persona - First scenario (using pipeline manifest):
+
+Note that the pipeline service is pre-configured here. Import this pipeline run yaml file, Select Import pipeline based on the snapshot above in Pipelines section.  (You need to download this file locally before you can upload to the OpenShift AI pipeline Dashboard. https://github.com/ritzshah/llm-rag-deployment/blob/update-token-v1/examples/pipelines/working-new-llm-ingestion-test.yaml[https://github.com/ritzshah/llm-rag-deployment/blob/update-token-v1/examples/pipelines/working-new-llm-ingestion-test.yaml]
+
+Import pipeline
+
+
+image::demo/import-pipeline-1.png[]
+
+Upload the file you downloaded from the above git url - working-new-llm-ingestion-test.yaml
+
+image::demo/import-pipeline-2.png[]
+
+This will create a DAG (Directed Acyclic Graph)
+
+Now Import Pipeline.This will create a pipeline which you can use to create a pipeline run. Once you create a pipeline run, it triggers a tekton pipeline run in OpenShift.
+
+
+image::demo/dag.png[]
+
+Select Create run from the above and fill the Name, Description (optional) and select Pipeline from the drop down menu. Also note that you can run it immediately or schedule it for a recurring run. This scheduling is important for RAG data ingestion w.r.t periodic change in the data being ingested into RAG Vector DB.
+
+image::demo/create-run.png[]
+
+Update the name of the run and review other parameters.
+
+image::demo/create-run-2.png[]
+
+Push the Create Run button and this will trigger a data science pipeline run.
+
+There are 4 tasks in the pipeline,  +
+Task 1 is to ingest the data into PG Vector DB. +
+Task 2 is to verify that data is ingested into the PG Vector DB and can query the DB without any issues post data ingestion. +
+Task 3 is to test the response time of the llm and to ensure that everything from LLM is working fine post ingestion of the new data in VectorDB. +
+Task 4 summarizes the results into a minio bucket folder.
+
+In Task 1 currently we are just adding very minimal documentation of Red Hat OpenShift AI 2-latest Release Notes. +
+Why 2., just to showcase that the LLM with RAG in our case provides specific information we have added into vectordb and not hallucinating too much (this is a problem to discuss some other time).
+
+
+image::demo/task-run-1.png[]
+
+This is what you see in OpenShift AI Dashboard
+
+Get the pod name from the above and check the run in OpenShift. Its the same project where you run the above data science pipeline.
+
+image::demo/langchain-task-view.png[]
+
+This is what you see in the OpenShift console/dashboard.Selecting the task will give you Logs for the task run. The pipeline takes around 10 to 12 minutes to run, so make sure that you have one already in the finished state before the demo so that you can straight away move to the finished pipeline and save time there.
+
+
+image::demo/data-ingestion-response-check.png[]
+
+You can check the logs either in OpenShift AI task Logs (for Data Scientist Persona) or in OpenShift (for admin persona).
+
+image::data:demo/pipeline-task-logs.png[]
+
+Show the finished pipeline in both OpenShift AI Dashboard. Each task is a pod running in the  +
+If you move to some other section in OpenShift AI dashboard and want to go back to view the running pipeline you can “View Runs”:
+
+image::demo/view-runs.png[]
+
+
+image::demo/runs-page.png[]
+
+Once the Run is completed, you will have this output visible in the Runs:
+
+
+image::demo/successful-run-completion-dag.png[]
+
+Note that a successful completion of the pipeline ensures that new data is ingested in the RAG database and tested. Note that in real world situations, the tests can be very different and very specific to check the quality of the data ingested and retrieved. It takes around 10 minutes to  complete the pipeline run.
+
+=== Data Scientist /Developer persona - Second scenario
+
+*(Optional demo only if there is a developer in the audience)* +
+*Data Scientist using Elyra pipeline editor to create and run the above pipeline.*
+
+Everything you need is already set in this environment like pipeline server, runtime environment, etc. Elyra run will convert your pipeline on canvas to creating a pipeline run for tekton in OpenShift.
+
+Go back to the Data Science project ic-shared-rag-llm your OpenShift AI Dashboard and create a workbench similar to the one already running. 
+Use "Standard Data Science" image for creation of workbench.
+Once the new workbench is created, open it and clone the git repo before you do the demonstration to save time. +
+Create a new workbench -> llm test
+
+
+image::demo/create-workbench-test-llm.png[]
+
+Once the workbench is created, you should select “Open” for llm test workbench only.
+
+
+image::demo/open-test-llm-wkbench.png[]
+
+This will ask you to login if it's for the first time. Use the same admin user/password as you have used previously and login to the workbench. Do Allow selected permissions before you access your workbench.
+
+image::demo/authorize-test-llm.png[]
+
+Wait for jupyterhub notebook to be launched (takes a minute for the first time) and then clone this git repository +
+https://github.com/ritzshah/llm-rag-deployment.git[https://github.com/ritzshah/llm-rag-deployment.git]
+
+Before you proceed further ensure that the Data Science Pipeline is referencing to right S3 storage route and not the local Kubernetes service. You need to change the service address to route for S3 storage access as shown below.
+
+
+image::demo/review-ds-pipeline-ui.png[]
+
+Use the route you get from the minio-s3 route component in the ic-shared-rag-minio project as shown below in the Example and the image if not already set. +
+Example : https://minio-s3-ic-shared-rag-minio.apps.cluster-276jx.276jx.sandbox2778.opentlc.com[https://minio-s3-ic-shared-rag-minio.apps.cluster-276jx.276jx.sandbox2778.opentlc.com]
+
+image::demo/minio-route.png[]
+
+After route update
+image::demo/minio-route-update.png[]
+
+After updating the route, you need to Save & Close the above. Make sure that the Cloud Object Storage Endpoint is now reflecting the new updated route. Value.
+
+image::demo/dsp-endpoint-check.png[]
+
+From the left side panel select the icon to clone the git repository and use the above git repo (https://github.com/ritzshah/llm-rag-deployment.git[https://github.com/ritzshah/llm-rag-deployment.git]). Select Clone. This will download and add this git repository to your jupyterhub notebook..
+
+image::demo/clone-repo.png[]
+
+*IMP : *Once you clone the repo ensure that you switch the *branch* to “*update-token-v1*”, as the pipeline we create is in this branch. Go to llm-rag-deployment branch and select the branch. See image below for reference.
+
+image::demo/update-branch.png[]
+
+In llm-rag-deployment/examples go to pipelines folder and select “data_ingestion_response_check.pipeline” file.
+
+image::demo/select-pipeline.png[]
+
+This will open the file in elyra editor and you will see those 4 tasks which you saw earlier as well. Now as a data scientist you can add or delete the tasks (just drag a python code and it gets added as a task into the pipeline, it's that simple for a data scientist and you do not need to know how the pipeline works).
+
+Task 1’s code can be updated to point to new data and that should push new data to vectordb.
+
+
+image::demo/task-1-update.png[]
+
+Press the Run button as you see in the above screenshot. Select the defaults and say OK and then again press OK. Ensure that you update the Pipeline Name with a different name as the same name already exists from the previous run.
+
+
+
+image::demo/run-pipeline.png[]
+
+Once the pipeline is created, you should see this output:
+
+image::demo/job-submission.png[]
+
+Select Run Details to review the run. This will open a new tab/screen. Once it loads, you will see the following on screen. Alternatively you can go to Experiments -> Experiments and runs on OpenShift AI Dashboard to review the run directly.
+
+Check the pipeline created with Elyra.
+
+image::demo/check-data-pipeline-elyra.png[]
+
+Select View Runs :
+
+
+image::demo/data-ingestion-response-check-graph.png[]
+
+
+image::demo/run-check-main-ui.png[]
+
+Once you open the above Run, it will show the same pipeline you saw earlier when you ran as admin persona.
+
+Let's say you created a python code to check the quality of the response and want to add it  alongside test_response. You can do this right in the elyra editor and this will create additional tasks in the pipeline run automatically for you.
+
+image::demo/cool.png[]
+
+Isn’t that !!
+
+This next section is to show that you can add new tasks and execute. Currently this new task is not executed correctly in the pipeline and so do not show the complete output or wait for it to finish. Just execute and show that it's running and close the discussion for now.
+
+Let’s add a task, say we want to check the quality of the response output from LLM. We can add that as a task through the elyra editor. Drag the python code which does response quality check.
+
+
+image::demo/drag-task-elyra.png[]
+
+Then connect the lines from the second task to this new task and from this new task to summarize task. This should run both the response tasks in parallel.
+
+Step 1
+
+image::demo/drag-task-elyra-step1.png[]
+
+&  +
+Step 2
+
+image::demo/drag-task-elyra-step1.png[]
+
+Now re-run the complete pipeline again and this time it should include the new task as well.
+
+Check AI dashboard
+
+image::demo/recheck-dashboard-rhoai.png[]
+
+You will see this new pipelinerun. Select the run and this should take you here:
+
+image::demo/check-new-dag.png[]
+
+You can view the run and this is what you will see.
+
+image::demo/new-dag-run-view.png[]
+
+You as a data scientist do not need to know about the underlying pipeline implementation but just use elyra editor and drop your code as tasks , connect it the way you want to create workflow and run. That’s it.
+
+=== Troubleshooting
+
+. If you do not see the following pods running in our ic-shared-rag-llm project you need to delete the dspa and resync with the prune option the ds-rag-pipelines project from ArgoCD to get this fixed.
+
+
+image::demo/troubleshooting-rag.png[]
+
+&  +
+in ArgoCD create-ds-pipeline-config pod should be healthy
+
+
+image::demo/check-argo-1.png[]
+
+If you do not see the above, do the following to fix it.  +
+On your OpenShift UI, start the OpenShift Terminal and run the following:
+
+Welcome to the OpenShift Web Terminal. Type "help" for a list of installed CLI tools. +
+bash-4.4 ~ $ oc get dspa -n ic-shared-rag-llm +
+NAME                   AGE +
+pipelines-definition   129m
+
+bash-4.4 ~ $ oc delete dspa pipelines-definition -n ic-shared-rag-llm +
+datasciencepipelinesapplication.datasciencepipelinesapplications.opendatahub.io "pipelines-definition" deleted
+
+Go to ArgoCD and sync with the prune option the following application.
+
+image::demo/check-argo-2.png[]
