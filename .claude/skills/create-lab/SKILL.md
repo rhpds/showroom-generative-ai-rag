@@ -991,6 +991,23 @@ Click on the next section to begin the workshop.
 
 I'll create a complete module with:
 
+**CRITICAL: Image Syntax Enforcement**:
+When generating ANY image reference in the module content, you MUST include `link=self,window=blank`:
+
+✅ **CORRECT - Always use this format**:
+```asciidoc
+image::filename.png[Description,link=self,window=blank,width=700]
+image::pipeline-view.png[Pipeline Execution,link=self,window=blank,width=700,title="Pipeline Running"]
+```
+
+❌ **WRONG - Never generate images without link parameter**:
+```asciidoc
+image::filename.png[Description,width=700]
+image::pipeline-view.png[Pipeline Execution,width=700]
+```
+
+**Why**: This makes images clickable to open full-size in new tab, preventing learners from losing their place in the workshop.
+
 **Required Structure**:
 - Learning objectives (3-4 items)
 - Business introduction with scenario

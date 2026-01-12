@@ -738,6 +738,23 @@ Based on your references, I'll:
 
 I'll create a module with Know/Show structure:
 
+**CRITICAL: Image Syntax Enforcement**:
+When generating ANY image reference in the demo content, you MUST include `link=self,window=blank`:
+
+✅ **CORRECT - Always use this format**:
+```asciidoc
+image::filename.png[Description,link=self,window=blank,width=700]
+image::diagram.png[Architecture,link=self,window=blank,align="center",width=800,title="System Architecture"]
+```
+
+❌ **WRONG - Never generate images without link parameter**:
+```asciidoc
+image::filename.png[Description,width=700]
+image::diagram.png[Architecture,align="center",width=800]
+```
+
+**Why**: This makes images clickable to open full-size in new tab, preventing presenters from losing their place.
+
 **CRITICAL: Demo Talk Track Separation**:
 Demo modules MUST separate presenter guidance from technical steps:
 
